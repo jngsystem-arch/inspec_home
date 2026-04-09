@@ -110,7 +110,7 @@ const differentiators = [
   },
   {
     no: "02",
-    title: "정보설비 성능 분석 역량",
+    title: "정보통신설비 성능 분석 역량",
     desc: "네트워크·CCTV·출입통제·BEMS 등 정보설비는 IT 시스템의 하위 구조입니다. 22년간의 시스템 성능 분석 경험이 구조적 진단 근거가 됩니다.",
   },
   {
@@ -137,7 +137,7 @@ export default function HomePage() {
       <BreadcrumbSchema items={[{ name: "홈", path: "/" }]} />
 
       {/* ── 히어로 ── */}
-      <section className="text-white" style={{ background: "linear-gradient(rgba(59,130,246,0.13) 1px, transparent 1px) 0 0 / 48px 48px, linear-gradient(90deg, rgba(59,130,246,0.13) 1px, transparent 1px) 0 0 / 48px 48px, linear-gradient(160deg, #040D1C 0%, #0A1F3D 42%, #0C2450 100%)" }}>
+      <section className="text-white" style={{ background: "linear-gradient(rgba(59,130,246,0.09) 1px, transparent 1px) 0 0 / 48px 48px, linear-gradient(90deg, rgba(59,130,246,0.09) 1px, transparent 1px) 0 0 / 48px 48px, linear-gradient(160deg, #040D1C 0%, #0A1F3D 42%, #0C2450 100%)" }}>
         <div className="container-main py-16 sm:py-20">
           <div className="inline-flex items-center gap-2 bg-[var(--color-warning)] text-white text-sm font-bold px-4 py-1.5 rounded-full mb-6">
             <AlertTriangle size={14} />
@@ -153,7 +153,7 @@ export default function HomePage() {
           </p>
           <p className="text-white/70 text-sm mb-6 max-w-xl leading-relaxed">
             저희는 22년간 기업 IT 시스템(서버·네트워크·보안·PC)의 성능·장애·운영을 유지보수해 온 경험을 바탕으로
-            정보설비 성능점검에서도 구조적 진단 역량을 제공합니다.
+            정보통신설비 성능점검에서도 구조적 진단 역량을 제공합니다.
           </p>
 
           {/* ── 1초 진단 툴 ── */}
@@ -257,7 +257,7 @@ export default function HomePage() {
               </h2>
               <p className="text-sm leading-relaxed mb-6" style={{ color: "var(--color-gray-600)" }}>
                 22년간 기업 IT 시스템(서버·네트워크·보안·PC)의 성능, 장애, 보안, 운영을 유지보수해 온 경험을 바탕으로
-                정보설비 성능점검에서도 구조적 진단 역량을 제공합니다.
+                정보통신설비 성능점검에서도 구조적 진단 역량을 제공합니다.
               </p>
               <p className="text-sm leading-relaxed mb-6" style={{ color: "var(--color-gray-600)" }}>
                 네트워크, CCTV, 출입통제, BEMS 등 정보설비는 기업 IT 인프라의 하위 구조와 직결됩니다.

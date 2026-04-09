@@ -99,7 +99,7 @@ const services = [
       "불량 설비 조치 사항 관리주체 즉시 통보",
       "점검 완료 후 결과 보고서 제공",
     ],
-    highlight: "22년간 기업 IT 시스템(서버·네트워크·보안·PC)의 성능·장애·보안을 분석해 온 경험이 정보설비 성능점검의 구조적 진단 근거가 됩니다.",
+    highlight: "22년간 기업 IT 시스템(서버·네트워크·보안·PC)의 성능·장애·보안을 분석해 온 경험이 정보통신설비 성능점검의 구조적 진단 근거가 됩니다.",
   },
   {
     icon: ShieldCheck,
@@ -154,7 +154,7 @@ export default function ServicePage() {
       <BreadcrumbSchema items={[{ name: "홈", path: "/" }, { name: "서비스 소개", path: "/service" }]} />
 
       {/* 헤더 */}
-      <section style={{ background: "linear-gradient(rgba(59,130,246,0.13) 1px, transparent 1px) 0 0 / 48px 48px, linear-gradient(90deg, rgba(59,130,246,0.13) 1px, transparent 1px) 0 0 / 48px 48px, linear-gradient(160deg, #040D1C 0%, #0A1F3D 42%, #0C2450 100%)" }}>
+      <section style={{ background: "linear-gradient(rgba(59,130,246,0.09) 1px, transparent 1px) 0 0 / 48px 48px, linear-gradient(90deg, rgba(59,130,246,0.09) 1px, transparent 1px) 0 0 / 48px 48px, linear-gradient(160deg, #040D1C 0%, #0A1F3D 42%, #0C2450 100%)" }}>
         <div className="container-main py-12">
           <p className="text-white/60 text-sm mb-2">서비스 소개</p>
           <h1 className="text-white text-3xl sm:text-4xl font-bold mb-4">정보통신설비 성능점검 대행 & 유지보수관리 위탁</h1>
@@ -185,7 +185,7 @@ export default function ServicePage() {
             <div className="bg-white p-6">
               <p className="text-sm leading-relaxed mb-5" style={{ color: "var(--color-gray-600)" }}>
                 저희는 22년간 기업 IT 시스템(서버·네트워크·보안·PC)의 성능, 장애, 보안, 운영을 유지보수해 온 경험을 바탕으로
-                정보설비 성능점검에서도 구조적 진단 역량을 제공합니다.
+                정보통신설비 성능점검에서도 구조적 진단 역량을 제공합니다.
                 단순 FM/시설관리형 외관 점검이 아닌, 실제 IT 운영 구조를 이해한 점검을 수행합니다.
               </p>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
