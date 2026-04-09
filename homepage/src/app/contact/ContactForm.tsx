@@ -25,8 +25,9 @@ type DetailForm = {
   email: string;
   buildingName: string;    // ① 건물 상호(명칭)
   buildingAddress: string; // ② 소재지
+  buildingArea: string;    // ③ 건물 연면적
   serviceScope: string[];  // 요청 업무 범위
-  equipment: string[];     // ③ 점검 대상 설비 (복수 선택)
+  equipment: string[];     // ④ 점검 대상 설비 (복수 선택)
   message: string;
 };
 
@@ -36,18 +37,18 @@ type DetailForm = {
 const SERVICE_SCOPE = [
   {
     id: "maintenance",
-    label: "유지보수·관리 위탁",
-    desc: "반기 1회 설비 점검 및 관리자 위탁",
+    label: "유지보수관리 대행",
+    desc: "반기 1회 관리점검 대행",
   },
   {
     id: "inspection",
     label: "성능점검 대행",
-    desc: "연 1회 33개 법정 의무 설비 성능점검 대행",
+    desc: "연 1회 성능점검 대행",
   },
   {
     id: "manager",
     label: "관리자 위탁선임",
-    desc: "정보통신기술자 선임 신고 대행",
+    desc: "선임 간주 처리 및 지자체 신고 대행",
   },
 ];
 
@@ -130,6 +131,18 @@ const EQUIPMENT_GROUPS = [
     items: ["통신용 전원 설비", "통신 접지 설비"],
   },
 ];
+
+/* ───────────────────────────────────────────────
+   연면적 → 구간·마감일 자동 판별
+─────────────────────────────────────────────── */
+function getAreaInfo(raw: string) {
+  const num = parseInt(raw.replace(/,/g, ""), 10);
+  if (!num || isNaN(num)) return null;
+  if (num >= 30000) return { range: "연면적 3만㎡ 이상", deadline: "2025.7.18 시행 중", color: "var(--color-success)", urgent: false };
+  if (num >= 10000) return { range: "연면적 1만~3만㎡", deadline: "2026.7.18 마감", color: "#E85C0D", urgent: true };
+  if (num >= 5000)  return { range: "연면적 5천~1만㎡", deadline: "2027.7.18", color: "var(--color-accent)", urgent: false };
+  return { range: "연면적 5천㎡ 미만", deadline: "대상 여부 확인 필요", color: "var(--color-gray-600)", urgent: false };
+}
 
 const WEB3FORMS_KEY = "08ac26e2-da08-4bbd-8871-ca08b59572f0";
 
@@ -367,6 +380,7 @@ function DetailContactForm() {
     email: "",
     buildingName: "",
     buildingAddress: "",
+    buildingArea: "",
     serviceScope: [],
     equipment: [],
     message: "",
@@ -411,6 +425,9 @@ function DetailContactForm() {
           email: form.email,
           "건물 상호(명칭)": form.buildingName,
           "건물 소재지": form.buildingAddress,
+          "건물 연면적": form.buildingArea
+            ? `${form.buildingArea}㎡ (${getAreaInfo(form.buildingArea)?.range ?? "확인 필요"})`
+            : "미입력",
           "요청 업무 범위": form.serviceScope.length > 0 ? form.serviceScope.join(", ") : "미선택",
           "점검 대상 설비": selectedEquipment,
           "선택 설비 수": `${form.equipment.length}개`,
@@ -526,6 +543,60 @@ function DetailContactForm() {
         />
       </div>
 
+      {/* ③ 건물 연면적 */}
+      <div>
+        <label className={labelClass} style={{ color: "var(--color-primary)" }}>
+          ③ 건물 연면적 <span style={{ color: "var(--color-warning)" }}>*</span>
+        </label>
+        <div className="relative flex items-center">
+          <input
+            type="text"
+            inputMode="numeric"
+            required
+            placeholder="예: 12,500"
+            value={form.buildingArea}
+            onChange={(e) => {
+              const digits = e.target.value.replace(/[^0-9]/g, "");
+              const formatted = digits ? parseInt(digits).toLocaleString("ko-KR") : "";
+              setForm({ ...form, buildingArea: formatted });
+            }}
+            className={`${inputClass} pr-10`}
+            style={focusStyle}
+          />
+          <span
+            className="absolute right-3 text-sm font-semibold pointer-events-none"
+            style={{ color: "var(--color-gray-600)" }}
+          >
+            ㎡
+          </span>
+        </div>
+        {(() => {
+          const info = getAreaInfo(form.buildingArea);
+          if (!info) return (
+            <p className="mt-1.5 text-xs" style={{ color: "var(--color-gray-600)" }}>
+              실제 연면적을 숫자로 입력하시면 의무 기한을 즉시 확인할 수 있습니다.
+            </p>
+          );
+          return (
+            <div
+              className="mt-1.5 flex items-center gap-2 px-3 py-2 rounded-lg text-xs"
+              style={{
+                background: `color-mix(in srgb, ${info.color} 10%, white)`,
+                borderLeft: `3px solid ${info.color}`,
+              }}
+            >
+              <span className="font-semibold" style={{ color: info.color }}>→ {info.range}</span>
+              <span
+                className="font-bold"
+                style={{ color: info.urgent ? "#E85C0D" : info.color }}
+              >
+                의무 기한: {info.deadline}
+              </span>
+            </div>
+          );
+        })()}
+      </div>
+
       {/* 요청 업무 범위 */}
       <div>
         <label className={labelClass} style={{ color: "var(--color-primary)" }}>
@@ -584,7 +655,7 @@ function DetailContactForm() {
       <div>
         <div className="flex items-center justify-between mb-3">
           <label className={labelClass} style={{ color: "var(--color-primary)", marginBottom: 0 }}>
-            ③ 점검 대상 설비 선택{" "}
+            ④ 점검 대상 설비 선택{" "}
             <span className="text-xs font-normal ml-1" style={{ color: "var(--color-gray-600)" }}>
               (해당 설비에 모두 체크해주세요)
             </span>
