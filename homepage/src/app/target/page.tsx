@@ -80,7 +80,7 @@ export default function TargetPage() {
       />
       <BreadcrumbSchema items={[{ name: "홈", path: "/" }, { name: "대상건축물 확인", path: "/target" }]} />
       {/* 페이지 헤더 */}
-      <section style={{ background: "linear-gradient(135deg, #0D2B5E 0%, #1A4A8A 100%)" }}>
+      <section style={{ background: "linear-gradient(rgba(59,130,246,0.13) 1px, transparent 1px) 0 0 / 48px 48px, linear-gradient(90deg, rgba(59,130,246,0.13) 1px, transparent 1px) 0 0 / 48px 48px, linear-gradient(160deg, #040D1C 0%, #0A1F3D 42%, #0C2450 100%)" }}>
         <div className="container-main py-12">
           <p className="text-white/60 text-sm mb-2">대상건축물 확인</p>
           <h1 className="text-white text-3xl sm:text-4xl font-bold mb-4">우리 건물, 점검 의무 대상인가요?</h1>

@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function Footer() {
   return (
-    <footer className="bg-[var(--color-primary)] text-white mt-auto">
+    <footer className="text-white mt-auto" style={{ background: "radial-gradient(ellipse 52% 68% at 74% 44%, rgba(59,130,246,0.12) 0%, transparent 68%), linear-gradient(168deg, #040D1C 0%, #0A1F3D 35%, #0D2B5E 100%)" }}>
       <div className="container-main py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* 회사 소개 */}

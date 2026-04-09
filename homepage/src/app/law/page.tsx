@@ -99,7 +99,7 @@ const obligations = [
     title: "성능점검 의무",
     color: "#7C3AED",
     items: [
-      "매년 1회 이상 34개 대상 설비 성능점검 실시",
+      "매년 1회 이상 33개 법정 의무 설비 성능점검 실시 (전유부분 1개 선택)",
       "정보통신설비 성능점검표 기록 및 5년 보존",
       "지자체 요청 시 성능점검표 즉시 제출",
       "공사업자 또는 용역업자에게 대행 위탁 가능",
@@ -134,6 +134,7 @@ const penalties = [
   { violation: "유지보수·관리기준을 준수하지 아니한 경우", amount: "300만원", law: "법 제37조의4" },
   { violation: "점검기록을 작성하지 아니하거나 거짓으로 작성한 경우", amount: "300만원", law: "법 제37조의4" },
   { violation: "점검기록(5년)을 보존하지 아니한 경우", amount: "150만원", law: "법 제37조의4" },
+  { violation: "유지보수·관리자 선임 신고를 하지 아니한 경우 (30일 이내 신고 불이행)", amount: "100만원", law: "법 제37조의4" },
   { violation: "지자체 요청 시 점검기록을 제출하지 아니한 경우", amount: "100만원", law: "법 제37조의4" },
 ];
 
@@ -147,7 +148,7 @@ export default function LawPage() {
       <BreadcrumbSchema items={[{ name: "홈", path: "/" }, { name: "법령 안내", path: "/law" }]} />
 
       {/* 헤더 */}
-      <section style={{ background: "linear-gradient(135deg, #0D2B5E 0%, #1A4A8A 100%)" }}>
+      <section style={{ background: "linear-gradient(rgba(59,130,246,0.13) 1px, transparent 1px) 0 0 / 48px 48px, linear-gradient(90deg, rgba(59,130,246,0.13) 1px, transparent 1px) 0 0 / 48px 48px, linear-gradient(160deg, #040D1C 0%, #0A1F3D 42%, #0C2450 100%)" }}>
         <div className="container-main py-12">
           <p className="text-white/60 text-sm mb-2">법령 안내</p>
           <h1 className="text-white text-3xl sm:text-4xl font-bold mb-4">관련 법령 및 의무사항</h1>
@@ -208,6 +209,13 @@ export default function LawPage() {
               <p className="mt-3 text-xs" style={{ color: "var(--color-gray-600)" }}>
                 ※ 위탁계약서에 유지보수·관리 위탁 범위가 명확히 포함되어야 선임 간주 효과가 인정됩니다.
               </p>
+              <div className="mt-3 rounded-lg px-4 py-3 text-xs" style={{ background: "#fff8f5", border: "1px solid var(--color-warning)" }}>
+                <strong style={{ color: "var(--color-warning)" }}>⚠ 선임 간주 ≠ 신고 면제:</strong>{" "}
+                <span style={{ color: "var(--color-gray-600)" }}>
+                  위탁 계약 후에도 <strong>위탁업체 소속 담당 기술자를 해당 건축물의 관리자로 지정하여 30일 이내에 관할 지자체에 선임 신고서를 반드시 제출</strong>해야 합니다.
+                  신고를 누락하면 <strong>과태료 100만원</strong>이 부과됩니다. 제이앤지시스템은 이 신고 절차 전체를 무상으로 대행합니다.
+                </span>
+              </div>
             </div>
           </div>
 
@@ -241,10 +249,10 @@ export default function LawPage() {
                 </p>
               </div>
               <div className="rounded-xl p-4" style={{ background: "var(--color-warning-light)", border: "1px solid var(--color-warning)" }}>
-                <p className="text-sm font-bold mb-1" style={{ color: "var(--color-warning)" }}>📋 행정 신고도 저희가 대행합니다</p>
+                <p className="text-sm font-bold mb-1" style={{ color: "var(--color-warning)" }}>⚠ 법적 의무: 선임 신고 30일 이내 필수</p>
                 <p className="text-sm" style={{ color: "var(--color-gray-600)" }}>
-                  전문 공사업체와 위탁 계약을 맺더라도 <strong>선임일(계약일)로부터 30일 이내</strong>에 관할 지자체에 선임 신고서를 제출해야 합니다.
-                  계약 후 30일 이내 관할 지자체 선임 신고 등 복잡한 행정 업무까지 <strong>제이앤지시스템이 무상으로 대행</strong>해 드립니다.
+                  위탁 계약 후 <strong>선임일(계약일)로부터 30일 이내</strong>에 관할 지자체에 선임 신고서를 제출해야 하는 것은 <strong>법적 의무</strong>입니다 (미신고 시 과태료 100만원).
+                  계약 후 선임 신고, 변경 신고 등 복잡한 행정 절차 전체를 <strong>제이앤지시스템이 무상으로 대행</strong>해 드립니다.
                 </p>
               </div>
             </div>
@@ -454,7 +462,7 @@ export default function LawPage() {
               </thead>
               <tbody className="divide-y divide-[var(--color-border)]">
                 {[
-                  { range: "연면적 3만㎡ 이상", deadline: "2025. 7. 18.", note: "유지보수·관리(반기 1회) + 성능점검(연 1회) + 기록보존 5년" },
+                  { range: "연면적 3만㎡ 이상", deadline: "2025. 7. 18.", note: "유지보수·관리(반기 1회) + 성능점검(연 1회) + 기록보존 5년", urgent: true },
                   { range: "연면적 1만㎡ 이상 ~ 3만㎡ 미만", deadline: "2026. 7. 18.", note: "동일 의무 이행 — 올해 마감", urgent: true },
                   { range: "연면적 5천㎡ 이상 ~ 1만㎡ 미만", deadline: "2027. 7. 18.", note: "동일 의무 이행 — 사전 준비 권장" },
                 ].map(({ range, deadline, note, urgent }) => (
@@ -466,6 +474,19 @@ export default function LawPage() {
                 ))}
               </tbody>
             </table>
+          </div>
+          <div className="mt-4 rounded-xl px-5 py-4 flex items-start gap-3" style={{ background: "#fff8f5", border: "2px solid var(--color-warning)" }}>
+            <AlertTriangle size={20} style={{ color: "var(--color-warning)" }} className="shrink-0 mt-0.5" />
+            <div>
+              <p className="text-sm font-bold mb-1" style={{ color: "var(--color-warning)" }}>
+                🚨 연면적 3만㎡ 이상 대형 건축물 — 올해 7월 18일까지 최초 성능점검 완료 필수
+              </p>
+              <p className="text-sm" style={{ color: "var(--color-gray-600)" }}>
+                2025년 7월 18일부터 제도가 시행된 3만㎡ 이상 건축물은 <strong>법령상 '매년 1회 이상' 성능점검</strong> 의무에 따라
+                <strong> 2026년 7월 18일까지 최초 성능점검을 완료</strong>해야 합니다. 현재 2026년 4월이므로 약 3개월밖에 남지 않았습니다.
+                점검 일정 확보가 늦어질수록 성수기 대기 시간이 길어질 수 있으니 지금 바로 상담하세요.
+              </p>
+            </div>
           </div>
 
           <div className="mt-10 flex flex-col sm:flex-row gap-4 items-center justify-center">

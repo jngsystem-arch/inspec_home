@@ -60,7 +60,7 @@ const services = [
   {
     icon: ClipboardList,
     title: "성능점검 대행",
-    desc: "34개 정보통신설비에 대한 법정 성능점검을 연 1회 이상 대행합니다. 성능점검표 기록·보존(5년) 및 지자체 제출 지원까지 원스톱 처리.",
+    desc: "33개 법정 의무 대상 설비(+전유부분 1개 선택)에 대한 성능점검을 연 1회 이상 대행합니다. 성능점검표 기록·보존(5년) 및 지자체 제출 지원까지 원스톱 처리.",
     period: "매년 1회 이상",
     color: "var(--color-accent)",
     href: "/service",
@@ -76,7 +76,7 @@ const services = [
   {
     icon: UserCheck,
     title: "관리자 선임 간주 처리",
-    desc: "공사업자에게 유지보수·관리를 위탁하면 관리자를 선임한 것으로 봅니다(선임 간주). 선임 신고부터 인정교육 이수 확인까지 대행합니다.",
+    desc: "공사업자에게 유지보수·관리를 위탁하면 관리자를 선임한 것으로 봅니다(선임 간주). 단, 계약일로부터 30일 이내 지자체 선임 신고는 법적 의무이며(미신고 시 과태료 100만원), 신고 서류 작성부터 제출까지 무상 대행합니다.",
     period: "상시",
     color: "#7C3AED",
     href: "/service",
@@ -137,7 +137,7 @@ export default function HomePage() {
       <BreadcrumbSchema items={[{ name: "홈", path: "/" }]} />
 
       {/* ── 히어로 ── */}
-      <section className="text-white" style={{ background: "linear-gradient(135deg, #0D2B5E 0%, #1A4A8A 100%)" }}>
+      <section className="text-white" style={{ background: "linear-gradient(rgba(59,130,246,0.13) 1px, transparent 1px) 0 0 / 48px 48px, linear-gradient(90deg, rgba(59,130,246,0.13) 1px, transparent 1px) 0 0 / 48px 48px, linear-gradient(160deg, #040D1C 0%, #0A1F3D 42%, #0C2450 100%)" }}>
         <div className="container-main py-16 sm:py-20">
           <div className="inline-flex items-center gap-2 bg-[var(--color-warning)] text-white text-sm font-bold px-4 py-1.5 rounded-full mb-6">
             <AlertTriangle size={14} />
@@ -184,7 +184,7 @@ export default function HomePage() {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
             {[
               { value: "22년", label: "IT 인프라 유지보수 경험" },
-              { value: "34개", label: "점검 대상 설비" },
+              { value: "33개", label: "법정 의무 점검 설비" },
               { value: "5년", label: "점검기록 보존 의무" },
               { value: "300만원", label: "미이행 시 최대 과태료" },
             ].map(({ value, label }) => (
@@ -489,7 +489,7 @@ export default function HomePage() {
               {
                 icon: BarChart3,
                 title: "성능점검 주기",
-                body: "매년 1회 이상 34개 정보통신설비의 성능을 전문 장비로 측정합니다. 성능점검표는 5년간 보존 의무가 있습니다.",
+                body: "매년 1회 이상 33개 법정 의무 대상 설비(+전유부분 1개 선택)의 성능을 전문 장비로 측정합니다. 성능점검표는 5년간 보존 의무가 있습니다.",
                 color: "var(--color-success)",
               },
               {

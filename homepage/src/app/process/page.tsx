@@ -60,7 +60,7 @@ const howToSchema = {
       "@type": "HowToStep",
       position: 5,
       name: "성능점검 실시",
-      text: "34개 대상 설비에 대해 전문 장비를 사용하여 성능점검을 실시합니다.",
+      text: "33개 법정 의무 대상 설비(+전유부분 1개 선택)에 대해 전문 장비를 사용하여 성능점검을 실시합니다.",
     },
     {
       "@type": "HowToStep",
@@ -85,7 +85,7 @@ const steps = [
     title: "현장 조사 및 견적",
     duration: "3일 이내",
     desc: "전문 기술자가 직접 방문하여 설치된 정보통신설비를 조사하고 맞춤 견적서를 제공합니다.",
-    details: ["34개 설비 보유 현황 확인", "설비 도면 및 설치 현황표 검토", "점검 난이도 및 소요 시간 산출", "맞춤 견적서 제공"],
+    details: ["33개 법정 의무 설비 보유 현황 확인 (+전유부분 1개 협의)", "설비 도면 및 설치 현황표 검토", "점검 난이도 및 소요 시간 산출", "맞춤 견적서 제공"],
     color: "var(--color-primary-mid)",
   },
   {
@@ -93,7 +93,7 @@ const steps = [
     title: "계약 체결",
     duration: "1일",
     desc: "성능점검 대행 및 유지보수·관리 위탁 계약을 체결합니다. 연간 점검 일정을 협의합니다.",
-    details: ["성능점검 대행 계약서 작성", "유지보수·관리 위탁 계약서 작성", "연간 점검 일정 협의", "관리자 선임 신고 처리 (해당 시)"],
+    details: ["성능점검 대행 계약서 작성", "유지보수·관리 위탁 계약서 작성", "연간 점검 일정 협의", "계약일로부터 30일 이내 지자체 선임 신고 무상 대행 (법적 의무)"],
     color: "#7C3AED",
   },
   {
@@ -108,7 +108,7 @@ const steps = [
     no: "05",
     title: "성능점검 실시",
     duration: "1~2일",
-    desc: "전문 장비를 갖춘 기술자가 34개 대상 설비를 항목별로 점검합니다. 이상 설비는 즉시 보고합니다.",
+    desc: "전문 장비를 갖춘 기술자가 33개 법정 의무 대상 설비를 항목별로 점검합니다. 이상 설비는 즉시 보고합니다.",
     details: ["통신설비 8개 항목 점검", "정보설비 23개 항목 점검", "방송·기타설비 3개 항목 점검", "이상 설비 즉시 관리주체 통보"],
     color: "var(--color-success)",
   },
@@ -132,7 +132,7 @@ export default function ProcessPage() {
       <BreadcrumbSchema items={[{ name: "홈", path: "/" }, { name: "점검 절차", path: "/process" }]} />
 
       {/* 헤더 */}
-      <section style={{ background: "linear-gradient(135deg, #0D2B5E 0%, #1A4A8A 100%)" }}>
+      <section style={{ background: "linear-gradient(rgba(59,130,246,0.13) 1px, transparent 1px) 0 0 / 48px 48px, linear-gradient(90deg, rgba(59,130,246,0.13) 1px, transparent 1px) 0 0 / 48px 48px, linear-gradient(160deg, #040D1C 0%, #0A1F3D 42%, #0C2450 100%)" }}>
         <div className="container-main py-12">
           <p className="text-white/60 text-sm mb-2">점검 절차</p>
           <h1 className="text-white text-3xl sm:text-4xl font-bold mb-4">정보통신설비 성능점검 절차</h1>

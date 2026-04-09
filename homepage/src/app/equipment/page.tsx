@@ -115,7 +115,7 @@ export default function EquipmentPage() {
       />
       <BreadcrumbSchema items={[{ name: "홈", path: "/" }, { name: "점검 대상 설비 34개", path: "/equipment" }]} />
       {/* 페이지 헤더 */}
-      <section style={{ background: "linear-gradient(135deg, #0D2B5E 0%, #1A4A8A 100%)" }}>
+      <section style={{ background: "linear-gradient(rgba(59,130,246,0.13) 1px, transparent 1px) 0 0 / 48px 48px, linear-gradient(90deg, rgba(59,130,246,0.13) 1px, transparent 1px) 0 0 / 48px 48px, linear-gradient(160deg, #040D1C 0%, #0A1F3D 42%, #0C2450 100%)" }}>
         <div className="container-main py-12">
           <p className="text-white/60 text-sm mb-2">점검 대상 설비</p>
           <h1 className="text-white text-3xl sm:text-4xl font-bold mb-4">정보통신설비 성능점검 대상 34개 설비</h1>
@@ -131,6 +131,15 @@ export default function EquipmentPage() {
             <p>
               정보통신설비 성능점검 대상은 통신설비 8개(케이블·배관·국선인입·단자함·이동통신구내선로·전화·방송공동수신안테나·종합유선방송구내전송선로),
               방송설비 1개(방송음향), 정보설비 23개(네트워크·CCTV·홈네트워크·BEMS 등), 기타설비 2개(통신용전원·통신접지)를 포함한 총 34개 설비입니다.
+            </p>
+          </div>
+
+          {/* 법정 의무 / 선택 구분 안내 */}
+          <div className="mb-6 rounded-xl px-4 py-3 text-sm flex items-start gap-2" style={{ background: "var(--color-accent-light)", border: "1px solid var(--color-accent)" }}>
+            <span className="shrink-0 mt-0.5">ℹ️</span>
+            <p style={{ color: "var(--color-primary)" }}>
+              34개 설비 중 <strong>33개는 법정 의무 점검 대상</strong>이며, <strong>홈네트워크 이용자 설비(전유부분: 세대 내부 월패드 등) 1종</strong>은 관리주체가 자율적으로 판단하는 선택(권장) 사항입니다.
+              전유부분 점검 여부는 계약 전 반드시 협의하시기 바랍니다.
             </p>
           </div>
 
