@@ -1,0 +1,18 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+# package.json과 package-lock.json을 먼저 복사하여 캐시를 활용합니다.
+COPY package*.json ./
+
+# 의존성 설치
+RUN npm install
+
+# 소스 코드 복사 (docker-compose에서 볼륨으로 덮어쓸 예정이지만 빌드 시 필요)
+COPY . .
+
+# Next.js 포트
+EXPOSE 3000
+
+# 개발 서버 실행
+CMD ["npm", "run", "dev"]

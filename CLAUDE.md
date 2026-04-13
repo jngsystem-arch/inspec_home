@@ -244,6 +244,46 @@ Analytics: GA4 + AI 트래픽 채널 그룹화
 Schema:    JSON-LD (컴포넌트 분리)
 ```
 
+## 코드 품질 및 안전한 개발 가이드라인 (Strict Code Quality)
+
+**어떤 배포 환경(GitHub Actions, Cloudflare Pages 등)에서도 빌드 오류를 방지하고 유지보수성을 극대화하기 위한 철저한 규칙입니다.**
+
+1. **타입스크립트 엄격성 (TypeScript Strictness)**
+   - `any` 타입 사용을 절대 금지합니다. 모든 변수와 함수는 명확한 인터페이스(`interface`)나 타입(`type`)을 가져야 합니다. (`@typescript-eslint/no-explicit-any` 방지)
+   - 선언 후 사용되지 않는 변수(`unused vars`)는 코드 리뷰 전 반드시 삭제합니다.
+
+2. **React Hooks 안전 사용 원칙 (Safe Hooks Pattern)**
+   - `useEffect`의 의존성 배열(Dependency Array)은 누락 없이 철저하게 관리해야 합니다. (`react-hooks/exhaustive-deps`)
+   - 함수가 의존성 배열에 포함될 경우 무한 렌더링 방지를 위해 가급적 `useCallback`으로 감싸고, `useEffect` 외부 또는 상단에 올바른 순서로 선언해야 합니다.
+   - `useEffect` 내부에서 동기적으로 상태를 설정(`setState`)하는 것을 삼가고, 데이터 초기화는 렌더링 시점에 직접 부여하거나 불필요한 이펙트를 제거합니다. (`react-hooks/set-state-in-effect` 경고 방지)
+
+3. **Next.js & React 모범 규약 준수**
+   - 자체 앱의 라우팅 간 이동에는 HTML 기본 태그인 `<a href="...">`를 절대 사용하지 않고, 반드시 Next.js의 `<Link href="...">`를 사용합니다. (`@next/next/no-html-link-for-pages` 방지)
+   - JSX 내부에 작성하는 텍스트 문자열 중 특수문자(작은따옴표 등)는 올바른 HTML 엔티티(`&apos;` 등)로 이스케이프 처리합니다.
+
+4. **빌드 무결성 (Build Integrity)**
+   - ESLint 경고나 TypeScript 컴파일 에러를 전역으로 회피(ignore)하는 설정의 사용을 원칙적으로 금지합니다. 오류는 발생한 원인을 수정하여 해결합니다.
+
+## 시큐어 코딩 및 웹 보안 가이드라인 (Secure Coding Guidelines)
+
+**불특정 다수의 방문자가 유입되는 마케팅 홈페이지의 특성상, 정보 유출 및 웹 해킹을 방지하기 위한 안전 수칙입니다.**
+
+1. **상시 의존성(라이브러리) 취약점 점검**
+   - 개발 중 수시로 `npm audit` 명령어를 실행하여 외부 오픈소스의 보안 취약점(CVE)을 스캔합니다.
+   - High 등급 이상의 취약점(예: Next.js DoS 취약점 등) 발견 시 `npm audit fix`를 통해 버전 업그레이드 및 보안 패치를 즉시 반영해야 합니다.
+
+2. **백엔드(Supabase) 접근 최소화 및 RLS 적용**
+   - 프론트엔드(브라우저)에서 데이터베이스를 직접 호출하기 때문에, Supabase의 Anon Key가 소스코드를 통해 노출됩니다.
+   - 따라서 누군가 Key를 알아내더라도 고객 연락처를 빼가지 못하도록, Supabase 대시보드에서 해당 테이블(`inquiries`)에 대해 **쓰기(INSERT) 권한만 열고 읽기(SELECT) 권한은 철벽 방어하는 RLS(Row Level Security)** 정책을 반드시 켜두어야 합니다.
+
+3. **HTTP 보안 헤더 강제 (Cloudflare Pages 방식)**
+   - 클릭재킹(버튼 속임수), XSS(위조 스크립트 실행) 등 웹 공격을 막기 위해 `public/_headers` 파일을 구성하여 브라우저에 보안 정책을 주입합니다.
+   - 적용 헤더: `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff` 등
+
+4. **소스코드 내 인증 정보 하드코딩 절대 금지**
+   - 소스코드 문자열 안에 직접 패스워드나 중요 토큰을 써넣는 것을 금지합니다.
+   - 현재 관리자 기능이 분리되어 1차적으로 해결되었으나, 불가피하게 필요할 경우 Cloudflare 환경변수(Environment Variables) 기능을 통해 플랫폼 단위에서 암호화하여 불러와야 합니다.
+
 ---
 
 ## 주요 섹션별 콘텐츠 메시지

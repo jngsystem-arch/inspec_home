@@ -1,82 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Send, CheckCircle2 } from "lucide-react";
-
-/* ───────────────────────────────────────────────
-   기본 신청 폼 타입
-─────────────────────────────────────────────── */
-type BasicForm = {
-  name: string;
-  company: string;
-  phone: string;
-  email: string;
-  buildingArea: string;
-  buildingType: string;
-  message: string;
-};
-
-/* ───────────────────────────────────────────────
-   상세 상담 신청 폼 타입
-─────────────────────────────────────────────── */
-type DetailForm = {
-  name: string;
-  phone: string;
-  email: string;
-  buildingName: string;    // ① 건물 상호(명칭)
-  buildingAddress: string; // ② 소재지
-  buildingArea: string;    // ③ 건물 연면적
-  serviceScope: string[];  // 요청 업무 범위
-  equipment: string[];     // ④ 점검 대상 설비 (복수 선택)
-  message: string;
-};
-
-/* ───────────────────────────────────────────────
-   요청 업무 범위 옵션
-─────────────────────────────────────────────── */
-const SERVICE_SCOPE = [
-  {
-    id: "maintenance",
-    label: "유지보수관리 대행",
-    desc: "반기 1회 관리점검 대행",
-  },
-  {
-    id: "inspection",
-    label: "성능점검 대행",
-    desc: "연 1회 성능점검 대행",
-  },
-  {
-    id: "manager",
-    label: "관리자 위탁선임",
-    desc: "선임 간주 처리 및 지자체 신고 대행",
-  },
-];
-
-/* ───────────────────────────────────────────────
-   공통 옵션
-─────────────────────────────────────────────── */
-const areaOptions = [
-  "연면적 3만㎡ 이상",
-  "연면적 1만㎡ 이상 ~ 3만㎡ 미만",
-  "연면적 5천㎡ 이상 ~ 1만㎡ 미만",
-  "연면적 5천㎡ 미만 (대상 여부 확인 필요)",
-];
-
-const typeOptions = [
-  "업무시설 (오피스, 빌딩)",
-  "판매시설 (쇼핑몰, 상가)",
-  "의료시설 (병원)",
-  "교육연구시설 (대학교, 연구소)",
-  "숙박시설 (호텔)",
-  "문화집회시설",
-  "운수시설",
-  "기타",
-];
-
-/* ───────────────────────────────────────────────
-   34개 점검 대상 설비 — 33개 법정 의무 + 전유부분 1개 선택 (대상현황표 기준)
-─────────────────────────────────────────────── */
-const EQUIPMENT_GROUPS = [
+import { Send, CheckCircle2, Search } from "lucide-react";
+import { supabase } from "@/lib/supabase";
+import Script from "next/script";
+export const EQUIPMENT_GROUPS = [
   {
     category: "통신설비",
     color: "#1A4A8A",
@@ -132,6 +60,62 @@ const EQUIPMENT_GROUPS = [
   },
 ];
 
+export const SERVICE_SCOPE_CONFIG = [
+  {
+    id: "maintenance",
+    label: "유지보수관리 대행",
+    desc: "반기 1회 관리점검 대행",
+  },
+  {
+    id: "inspection",
+    label: "성능점검 대행",
+    desc: "연 1회 성능점검 대행",
+  },
+  {
+    id: "manager",
+    label: "관리자 위탁선임",
+    desc: "선임 간주 처리 및 신고 대행",
+  },
+];
+
+declare global {
+  interface Window {
+    daum: {
+      Postcode: new (config: {
+        oncomplete: (data: { address: string; addressType: string; bname: string; buildingName: string }) => void;
+      }) => { open: () => void };
+    };
+  }
+}
+
+/* ───────────────────────────────────────────────
+   기본 신청 폼 타입
+─────────────────────────────────────────────── */
+type BasicForm = {
+  name: string;
+  company: string;
+  phone: string;
+  email: string;
+  buildingArea: string;
+  buildingAddress: string;
+  message: string;
+};
+
+/* ───────────────────────────────────────────────
+   상세 상담 신청 폼 타입
+─────────────────────────────────────────────── */
+type DetailForm = {
+  name: string;
+  phone: string;
+  email: string;
+  buildingName: string;    // ① 건물 상호(명칭)
+  buildingAddress: string; // ② 소재지
+  buildingArea: string;    // ③ 건물 연면적
+  serviceScope: string[];  // 요청 업무 범위
+  equipment: string[];     // ④ 점검 대상 설비 (복수 선택)
+  message: string;
+};
+
 /* ───────────────────────────────────────────────
    연면적 → 구간·마감일 자동 판별
 ─────────────────────────────────────────────── */
@@ -184,35 +168,93 @@ function BasicContactForm() {
     phone: "",
     email: "",
     buildingArea: "",
-    buildingType: "",
+    buildingAddress: "",
     message: "",
   });
+
+  const handleAddressSearch = () => {
+    if (typeof window !== "undefined" && window.daum) {
+      new window.daum.Postcode({
+        oncomplete: (data: { address: string; addressType: string; bname: string; buildingName: string }) => {
+          let fullAddress = data.address;
+          let extraAddress = "";
+
+          if (data.addressType === "R") {
+            if (data.bname !== "") {
+              extraAddress += data.bname;
+            }
+            if (data.buildingName !== "") {
+              extraAddress += extraAddress !== "" ? `, ${data.buildingName}` : data.buildingName;
+            }
+            fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
+          }
+
+          setForm((prev) => ({ ...prev, buildingAddress: fullAddress }));
+        },
+      }).open();
+    } else {
+      alert("주소 서비스를 불러오는 중입니다. 잠시 후 다시 시도해주세요.");
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
     try {
+      const payload = {
+        subject: `[상담신청] 상담신청 정보통신설비점검-${form.company}`,
+        from_name: "제이앤지시스템 홈페이지",
+        "신청유형": "상담신청",
+        name: form.name,
+        "회사·건물명": form.company,
+        "연락처": form.phone,
+        email: form.email,
+        "건물 소재지": form.buildingAddress || "미입력",
+        "건물 연면적": form.buildingArea
+          ? `${form.buildingArea}㎡ (${getAreaInfo(form.buildingArea)?.range ?? "확인 필요"})`
+          : "미입력",
+        "문의 내용": form.message || "없음",
+      };
+
+      // --- Rate Limiting (클라이언트 사이드) ---
+      const LAST_SUBMIT_KEY = "last_submit_time";
+      const now = Date.now();
+      const lastSubmit = localStorage.getItem(LAST_SUBMIT_KEY);
+      
+      if (lastSubmit && now - parseInt(lastSubmit) < 60000) {
+        const remaining = Math.ceil((60000 - (now - parseInt(lastSubmit))) / 1000);
+        setError(`${remaining}초 후에 다시 시도해주세요. (전송 제한 1분)`);
+        setLoading(false);
+        return;
+      }
+
+      // 1. Supabase CRM에 데이터 저장
+      await supabase.from("inquiries").insert([{
+        name: form.name,
+        phone: form.phone,
+        company: form.company,
+        inquiry_type: "상담신청",
+        details: JSON.stringify(payload),
+        status: "신규 문의"
+      }]);
+
+      // 2. Web3Forms로 이메일 발송
       const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({
           access_key: WEB3FORMS_KEY,
-          subject: `[기본신청] 상담신청 정보통신설비점검-${form.company}`,
-          from_name: "제이앤지시스템 홈페이지",
-          "신청유형": "기본 신청",
-          name: form.name,
-          "회사·건물명": form.company,
-          "연락처": form.phone,
-          email: form.email,
-          "건축물 연면적": form.buildingArea || "미선택",
-          "건축물 용도": form.buildingType || "미선택",
-          "문의 내용": form.message || "없음",
+          ...payload
         }),
       });
       const data = await res.json();
-      if (data.success) setSubmitted(true);
-      else setError("전송에 실패했습니다. 잠시 후 다시 시도해 주세요.");
+      if (data.success) {
+        localStorage.setItem(LAST_SUBMIT_KEY, Date.now().toString());
+        setSubmitted(true);
+      } else {
+        setError("전송에 실패했습니다. 잠시 후 다시 시도해 주세요.");
+      }
     } catch {
       setError("네트워크 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
     } finally {
@@ -246,7 +288,7 @@ function BasicContactForm() {
         </div>
         <div>
           <label className={labelClass} style={{ color: "var(--color-primary)" }}>
-            회사/건물명 <span style={{ color: "var(--color-warning)" }}>*</span>
+            건물명 <span style={{ color: "var(--color-warning)" }}>*</span>
           </label>
           <input
             type="text"
@@ -290,43 +332,94 @@ function BasicContactForm() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label className={labelClass} style={{ color: "var(--color-primary)" }}>
-            건축물 연면적
-          </label>
-          <select
+      {/* 건물 소재지 */}
+      <div>
+        <label className={labelClass} style={{ color: "var(--color-primary)" }}>
+          건물 소재지 <span style={{ color: "var(--color-warning)" }}>*</span>
+        </label>
+        <div className="flex gap-2">
+          <input
+            type="text"
+            required
+            placeholder="주소 찾기 버튼을 눌러주세요"
+            value={form.buildingAddress}
+            onChange={(e) => setForm({ ...form, buildingAddress: e.target.value })}
+            className={inputClass}
+            style={focusStyle}
+          />
+          <button
+            type="button"
+            onClick={handleAddressSearch}
+            className="shrink-0 flex items-center gap-1.5 px-4 py-2 text-sm font-bold rounded-lg border transition-all"
+            style={{ 
+              borderColor: "var(--color-accent)", 
+              color: "var(--color-accent)",
+              background: "white" 
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = "var(--color-accent-light)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "white";
+            }}
+          >
+            <Search size={14} /> 주소 찾기
+          </button>
+        </div>
+      </div>
+
+      {/* 건물 연면적 */}
+      <div>
+        <label className={labelClass} style={{ color: "var(--color-primary)" }}>
+          건물 연면적 <span style={{ color: "var(--color-warning)" }}>*</span>
+        </label>
+        <div className="relative flex items-center">
+          <input
+            type="text"
+            inputMode="numeric"
+            required
+            placeholder="예: 12,500"
             value={form.buildingArea}
-            onChange={(e) => setForm({ ...form, buildingArea: e.target.value })}
-            className={inputClass}
+            onChange={(e) => {
+              const digits = e.target.value.replace(/[^0-9]/g, "");
+              const formatted = digits ? parseInt(digits).toLocaleString("ko-KR") : "";
+              setForm({ ...form, buildingArea: formatted });
+            }}
+            className={`${inputClass} pr-10`}
             style={focusStyle}
+          />
+          <span
+            className="absolute right-3 text-sm font-semibold pointer-events-none"
+            style={{ color: "var(--color-gray-600)" }}
           >
-            <option value="">선택해주세요</option>
-            {areaOptions.map((o) => (
-              <option key={o} value={o}>
-                {o}
-              </option>
-            ))}
-          </select>
+            ㎡
+          </span>
         </div>
-        <div>
-          <label className={labelClass} style={{ color: "var(--color-primary)" }}>
-            건축물 용도
-          </label>
-          <select
-            value={form.buildingType}
-            onChange={(e) => setForm({ ...form, buildingType: e.target.value })}
-            className={inputClass}
-            style={focusStyle}
-          >
-            <option value="">선택해주세요</option>
-            {typeOptions.map((o) => (
-              <option key={o} value={o}>
-                {o}
-              </option>
-            ))}
-          </select>
-        </div>
+        {(() => {
+          const info = getAreaInfo(form.buildingArea);
+          if (!info) return (
+            <p className="mt-1.5 text-xs" style={{ color: "var(--color-gray-600)" }}>
+              실제 연면적을 숫자로 입력하시면 의무 기한을 즉시 확인할 수 있습니다.
+            </p>
+          );
+          return (
+            <div
+              className="mt-1.5 flex items-center gap-2 px-3 py-2 rounded-lg text-xs"
+              style={{
+                background: `color-mix(in srgb, ${info.color} 10%, white)`,
+                borderLeft: `3px solid ${info.color}`,
+              }}
+            >
+              <span className="font-semibold" style={{ color: info.color }}>→ {info.range}</span>
+              <span
+                className="font-bold"
+                style={{ color: info.urgent ? "#E85C0D" : info.color }}
+              >
+                의무 기한: {info.deadline}
+              </span>
+            </div>
+          );
+        })()}
       </div>
 
       <div>
@@ -386,6 +479,31 @@ function DetailContactForm() {
     message: "",
   });
 
+  const handleAddressSearch = () => {
+    if (typeof window !== "undefined" && window.daum) {
+      new window.daum.Postcode({
+        oncomplete: (data: { address: string; addressType: string; bname: string; buildingName: string }) => {
+          let fullAddress = data.address;
+          let extraAddress = "";
+
+          if (data.addressType === "R") {
+            if (data.bname !== "") {
+              extraAddress += data.bname;
+            }
+            if (data.buildingName !== "") {
+              extraAddress += extraAddress !== "" ? `, ${data.buildingName}` : data.buildingName;
+            }
+            fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
+          }
+
+          setForm((prev) => ({ ...prev, buildingAddress: fullAddress }));
+        },
+      }).open();
+    } else {
+      alert("주소 서비스를 불러오는 중입니다. 잠시 후 다시 시도해주세요.");
+    }
+  };
+
   const toggleEquipment = (item: string) => {
     setForm((prev) => ({
       ...prev,
@@ -410,33 +528,77 @@ function DetailContactForm() {
     setLoading(true);
     setError("");
     try {
+      // 관리자 위탁선임 단독 선택 방지 로직
+      const hasManager = form.serviceScope.includes("관리자 위탁선임");
+      const hasMaintenance = form.serviceScope.includes("유지보수관리 대행");
+      const hasInspection = form.serviceScope.includes("성능점검 대행");
+
+      if (hasManager && !hasMaintenance && !hasInspection) {
+        setError("'관리자 위탁선임'만 단독으로 신청하실 수 없습니다. '유지보수관리 대행' 또는 '성능점검 대행' 중 하나를 함께 선택해주세요.");
+        setLoading(false);
+        return;
+      }
+
       const selectedEquipment =
         form.equipment.length > 0 ? form.equipment.join(", ") : "미선택";
+        
+      const payload = {
+        subject: `[견적서신청] 상담신청 정보통신설비점검-${form.buildingName || form.name}`,
+        from_name: "제이앤지시스템 홈페이지",
+        "신청유형": "견적서 바로 신청",
+        name: form.name,
+        "연락처": form.phone,
+        email: form.email,
+        "건물 상호(명칭)": form.buildingName,
+        "건물 소재지": form.buildingAddress,
+        "건물 연면적": form.buildingArea
+          ? `${form.buildingArea}㎡ (${getAreaInfo(form.buildingArea)?.range ?? "확인 필요"})`
+          : "미입력",
+        "요청 업무 범위": form.serviceScope.length > 0 ? form.serviceScope.join(", ") : "미선택",
+        "점검 대상 설비": selectedEquipment,
+        "선택 설비 수": `${form.equipment.length}개`,
+        "문의 내용": form.message || "없음",
+      };
+
+      // --- Rate Limiting (클라이언트 사이드) ---
+      const LAST_SUBMIT_KEY = "last_submit_time_detail";
+      const now = Date.now();
+      const lastSubmit = localStorage.getItem(LAST_SUBMIT_KEY);
+      
+      if (lastSubmit && now - parseInt(lastSubmit) < 60000) {
+        const remaining = Math.ceil((60000 - (now - parseInt(lastSubmit))) / 1000);
+        setError(`${remaining}초 후에 다시 시도해주세요. (전송 제한 1분)`);
+        setLoading(false);
+        return;
+      }
+
+      // 1. Supabase CRM에 데이터 저장
+      await supabase.from("inquiries").insert([{
+        name: form.name,
+        phone: form.phone,
+        company: form.buildingName,
+        inquiry_type: "견적서 바로 신청",
+        details: JSON.stringify(payload),
+        status: "신규 문의"
+      }]);
+
+      // 2. Web3Forms로 이메일 발송
       const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({
           access_key: WEB3FORMS_KEY,
-          subject: `[상세신청] 상담신청 정보통신설비점검-${form.buildingName || form.name}`,
-          from_name: "제이앤지시스템 홈페이지",
-          "신청유형": "상세 상담 신청",
-          name: form.name,
-          "연락처": form.phone,
-          email: form.email,
-          "건물 상호(명칭)": form.buildingName,
-          "건물 소재지": form.buildingAddress,
-          "건물 연면적": form.buildingArea
-            ? `${form.buildingArea}㎡ (${getAreaInfo(form.buildingArea)?.range ?? "확인 필요"})`
-            : "미입력",
-          "요청 업무 범위": form.serviceScope.length > 0 ? form.serviceScope.join(", ") : "미선택",
-          "점검 대상 설비": selectedEquipment,
-          "선택 설비 수": `${form.equipment.length}개`,
-          "문의 내용": form.message || "없음",
+          ...payload
         }),
       });
+      
       const data = await res.json();
-      if (data.success) setSubmitted(true);
-      else setError("전송에 실패했습니다. 잠시 후 다시 시도해 주세요.");
+      if (data.success) {
+        localStorage.setItem(LAST_SUBMIT_KEY, Date.now().toString());
+        setSubmitted(true);
+      } else {
+        setError("전송에 실패했습니다. 잠시 후 다시 시도해 주세요.");
+      }
     } catch {
       setError("네트워크 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
     } finally {
@@ -532,15 +694,35 @@ function DetailContactForm() {
         <label className={labelClass} style={{ color: "var(--color-primary)" }}>
           ② 건물 소재지 <span style={{ color: "var(--color-warning)" }}>*</span>
         </label>
-        <input
-          type="text"
-          required
-          placeholder="예: 서울특별시 강남구 ○○로 00"
-          value={form.buildingAddress}
-          onChange={(e) => setForm({ ...form, buildingAddress: e.target.value })}
-          className={inputClass}
-          style={focusStyle}
-        />
+        <div className="flex gap-2">
+          <input
+            type="text"
+            required
+            placeholder="주소 찾기 버튼을 눌러주세요"
+            value={form.buildingAddress}
+            onChange={(e) => setForm({ ...form, buildingAddress: e.target.value })}
+            className={inputClass}
+            style={focusStyle}
+          />
+          <button
+            type="button"
+            onClick={handleAddressSearch}
+            className="shrink-0 flex items-center gap-1.5 px-4 py-2 text-sm font-bold rounded-lg border transition-all"
+            style={{ 
+              borderColor: "var(--color-accent)", 
+              color: "var(--color-accent)",
+              background: "white" 
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = "var(--color-accent-light)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "white";
+            }}
+          >
+            <Search size={14} /> 주소 찾기
+          </button>
+        </div>
       </div>
 
       {/* ③ 건물 연면적 */}
@@ -605,8 +787,18 @@ function DetailContactForm() {
             (중복 선택 가능)
           </span>
         </label>
+        
+        {/* 관리자 위탁선임 단독 선택 시 안내 */}
+        {form.serviceScope.includes("관리자 위탁선임") && 
+         !form.serviceScope.includes("유지보수관리 대행") && 
+         !form.serviceScope.includes("성능점검 대행") && (
+          <div className="mb-2 px-3 py-2 rounded-lg bg-[var(--color-warning-light)] border border-[var(--color-warning)] text-[var(--color-warning)] text-xs font-semibold animate-pulse">
+            ※ &apos;관리자 위탁선임&apos;은 점검 대행(유지보수/성능점검)과 함께 신청 가능합니다.
+          </div>
+        )}
+
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-1">
-          {SERVICE_SCOPE.map((svc) => {
+          {SERVICE_SCOPE_CONFIG.map((svc) => {
             const checked = form.serviceScope.includes(svc.label);
             return (
               <label
@@ -777,7 +969,7 @@ function DetailContactForm() {
           if (!loading) e.currentTarget.style.background = "var(--color-accent)";
         }}
       >
-        <Send size={16} /> {loading ? "전송 중..." : "상세 상담 신청하기"}
+        <Send size={16} /> {loading ? "전송 중..." : "견적서 바로 신청하기"}
       </button>
     </form>
   );
@@ -791,6 +983,10 @@ export default function ContactForm() {
 
   return (
     <div>
+      <Script 
+        src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js" 
+        strategy="afterInteractive"
+      />
       {/* 탭 버튼 */}
       <div
         className="flex rounded-xl p-1 mb-6"
@@ -810,7 +1006,7 @@ export default function ContactForm() {
               : { color: "var(--color-gray-600)" }
           }
         >
-          기본 신청
+          상담신청
         </button>
         <button
           type="button"
@@ -826,7 +1022,7 @@ export default function ContactForm() {
               : { color: "var(--color-gray-600)" }
           }
         >
-          상세 상담 신청
+          견적서 바로 신청
         </button>
       </div>
 

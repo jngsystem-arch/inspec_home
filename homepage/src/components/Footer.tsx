@@ -22,6 +22,7 @@ export default function Footer() {
             <p className="text-sm text-white/70 leading-relaxed">
               정보통신공사업법 제37조의2에 따른 성능점검 대행 및 유지보수·관리 위탁 전문 업체입니다.
             </p>
+
           </div>
 
           {/* 빠른 링크 */}

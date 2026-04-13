@@ -65,7 +65,11 @@ export default function FaqClient({ categories }: Props) {
   function toggleItem(id: string) {
     setOpenItems((prev) => {
       const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
       return next;
     });
   }
@@ -166,6 +170,7 @@ export default function FaqClient({ categories }: Props) {
                 className="w-full text-left px-4 py-3 text-sm hover:bg-[var(--color-accent-light)] transition-colors border-b last:border-b-0 flex items-start gap-2"
                 style={{ borderColor: "var(--color-border)" }}
                 role="option"
+                aria-selected={item.q === query}
               >
                 <span
                   className="shrink-0 text-xs font-bold px-2 py-0.5 rounded-full mt-0.5"

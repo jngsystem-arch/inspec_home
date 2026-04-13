@@ -3,7 +3,7 @@ import Link from "next/link";
 import {
   ShieldCheck, ClipboardList, UserCheck,
   AlertTriangle, CheckCircle2, ArrowRight,
-  Building2, FileText, Award, Server, Network,
+  Building2, Award, Server, Network,
   Monitor, Shield, Wrench, BarChart3, Clock, ChevronRight
 } from "lucide-react";
 import PageLayout from "@/components/PageLayout";

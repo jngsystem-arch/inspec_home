@@ -17,12 +17,15 @@ function calcDiff(target: Date) {
 const TARGET = new Date("2026-07-18T00:00:00+09:00");
 
 export default function Countdown() {
-  const [time, setTime] = useState<ReturnType<typeof calcDiff> | null>(null);
+  const [time, setTime] = useState<{ days: number; hours: number; minutes: number; seconds: number } | null>(null);
 
   useEffect(() => {
-    setTime(calcDiff(TARGET));
+    const initTimer = setTimeout(() => setTime(calcDiff(TARGET)), 0);
     const id = setInterval(() => setTime(calcDiff(TARGET)), 1000);
-    return () => clearInterval(id);
+    return () => {
+      clearTimeout(initTimer);
+      clearInterval(id);
+    };
   }, []);
 
   const units = [
