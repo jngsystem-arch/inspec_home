@@ -36,6 +36,17 @@ export default function Footer() {
               정보통신공사업법 제37조의2에 따른 성능점검 대행 및 유지보수·관리 위탁 전문 업체입니다.
             </p>
 
+            {/* 내부 관리자 전용 진입점 — 눈에 띄지 않게 배치 */}
+            <Link
+              href="/admin/login"
+              prefetch={false}
+              rel="nofollow noindex"
+              aria-label="관리자"
+              tabIndex={-1}
+              className="inline-block mt-4 text-[10px] text-white/20 hover:text-white/60 transition-colors select-none"
+            >
+              ·
+            </Link>
           </div>
 
           {/* 빠른 링크 */}

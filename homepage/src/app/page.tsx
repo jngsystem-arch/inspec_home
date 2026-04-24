@@ -41,24 +41,128 @@ export const metadata: Metadata = {
 
 const organizationSchema = {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "제이앤지시스템 JNGSYSTEM",
+  "@type": ["Organization", "LocalBusiness", "ProfessionalService"],
+  "@id": "https://jngsystem.com/#organization",
+  name: "제이앤지시스템",
+  alternateName: ["주식회사 제이앤지시스템", "JNGSYSTEM", "JNG SYSTEM"],
+  legalName: "주식회사 제이앤지시스템",
   url: "https://jngsystem.com",
-  telephone: "02-3444-3570",
+  logo: {
+    "@type": "ImageObject",
+    url: "https://jngsystem.com/JNGSYSTEM_2Line_Logo.png",
+    width: 800,
+    height: 280,
+  },
+  image: "https://jngsystem.com/opengraph-image",
+  telephone: "+82-2-3444-3570",
   email: "sales@jngsystem.co.kr",
-  areaServed: "KR",
+  taxID: "211-88-14679",
+  vatID: "211-88-14679",
   foundingDate: "2003",
-  description:
-    "22년간 기업 IT 인프라(서버·네트워크·보안·PC) 유지보수 경험을 바탕으로 정보통신설비 성능점검 및 유지보수·관리 위탁 서비스를 제공합니다.",
-  sameAs: [
-    "https://www.law.go.kr/법령/정보통신공사업법",
-    "https://www.msit.go.kr/",
+  areaServed: { "@type": "Country", name: "Republic of Korea" },
+  address: {
+    "@type": "PostalAddress",
+    addressCountry: "KR",
+    addressRegion: "서울특별시",
+  },
+  contactPoint: [
+    {
+      "@type": "ContactPoint",
+      telephone: "+82-2-3444-3570",
+      email: "sales@jngsystem.co.kr",
+      contactType: "customer service",
+      availableLanguage: ["Korean"],
+      areaServed: "KR",
+    },
   ],
+  openingHoursSpecification: {
+    "@type": "OpeningHoursSpecification",
+    dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+    opens: "09:00",
+    closes: "18:00",
+  },
+  description:
+    "정보통신공사업법 제37조의2에 따른 정보통신설비 성능점검 대행 및 유지보수·관리 위탁 전문 업체. 22년간 기업 IT 인프라(서버·네트워크·보안·PC) 유지보수 경험을 바탕으로 연면적 5,000㎡ 이상 건축물 관리주체의 법적 의무 이행을 지원합니다.",
+  slogan: "IT 전문가가 직접 수행하는 정보통신설비 성능점검·유지보수",
   knowsAbout: [
     "정보통신설비 성능점검",
-    "정보통신공사업법 제37조의2",
     "정보통신설비 유지보수관리",
+    "정보통신공사업법 제37조의2",
+    "정보통신공사업법 제37조의3",
+    "유지보수 관리자 선임",
+    "성능점검표 5년 보존",
+    "연면적 5천㎡ 이상 건축물 법정 의무",
   ],
+  knowsLanguage: ["ko"],
+  hasCredential: [
+    {
+      "@type": "EducationalOccupationalCredential",
+      credentialCategory: "license",
+      name: "과학기술정보통신부 정보통신공사업 등록",
+    },
+  ],
+  makesOffer: [
+    {
+      "@type": "Offer",
+      itemOffered: { "@type": "Service", name: "정보통신설비 성능점검 대행" },
+    },
+    {
+      "@type": "Offer",
+      itemOffered: { "@type": "Service", name: "정보통신설비 유지보수·관리 위탁" },
+    },
+    {
+      "@type": "Offer",
+      itemOffered: { "@type": "Service", name: "관리자 선임 간주 처리" },
+    },
+  ],
+};
+
+const webSiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://jngsystem.com/#website",
+  url: "https://jngsystem.com",
+  name: "제이앤지시스템 JNGSYSTEM",
+  inLanguage: "ko-KR",
+  publisher: { "@id": "https://jngsystem.com/#organization" },
+  potentialAction: {
+    "@type": "SearchAction",
+    target: {
+      "@type": "EntryPoint",
+      urlTemplate: "https://jngsystem.com/faq?q={search_term_string}",
+    },
+    "query-input": "required name=search_term_string",
+  },
+};
+
+// 홈페이지 하단 FAQ 미리보기 섹션 — AI 답변 엔진 인용 최적화용 FAQPage 스키마
+const homeFaqItems = [
+  {
+    q: "공사업체에 위탁하면 관리자를 선임하지 않아도 되나요?",
+    a: "공사업자에게 유지보수·관리를 위탁하면 관리자를 선임한 것으로 봅니다(선임 간주). 단, 위탁계약서 등 위탁 근거 서류를 갖추어야 합니다.",
+  },
+  {
+    q: "성능점검 기록은 얼마나 보존해야 하나요?",
+    a: "정보통신설비 성능점검표는 작성일로부터 5년간 보존해야 합니다. 지자체 요청 시 즉시 제출해야 하며, 미제출 시 100만원의 과태료가 부과됩니다.",
+  },
+  {
+    q: "공동주택과 상가가 함께 있는 복합건축물은 어떻게 되나요?",
+    a: "복합건축물의 경우 건축물대장의 주용도를 기준으로 판단합니다. 상가 부분이 연면적 기준을 충족하면 해당 부분의 관리주체가 의무를 이행해야 합니다.",
+  },
+  {
+    q: "FM(시설관리) 업체가 관리주체가 될 수 있나요?",
+    a: "FM 업체는 건물 소유자·관리자로부터 관리를 위탁받은 경우 관리주체로 볼 수 있습니다. 위탁계약의 범위에 정보통신설비 관리가 포함되어야 합니다.",
+  },
+];
+
+const homeFaqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: homeFaqItems.map(({ q, a }) => ({
+    "@type": "Question",
+    name: q,
+    acceptedAnswer: { "@type": "Answer", text: a },
+  })),
 };
 
 // 서비스 3가지
@@ -139,6 +243,14 @@ export default function HomePage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(homeFaqSchema) }}
       />
       <BreadcrumbSchema items={[{ name: "홈", path: "/" }]} />
 
@@ -544,24 +656,7 @@ export default function HomePage() {
             자주 묻는 질문
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto">
-            {[
-              {
-                q: "공사업체에 위탁하면 관리자를 선임하지 않아도 되나요?",
-                a: "공사업자에게 유지보수·관리를 위탁하면 관리자를 선임한 것으로 봅니다(선임 간주). 단, 위탁계약서 등 위탁 근거 서류를 갖추어야 합니다.",
-              },
-              {
-                q: "성능점검 기록은 얼마나 보존해야 하나요?",
-                a: "정보통신설비 성능점검표는 작성일로부터 5년간 보존해야 합니다. 지자체 요청 시 즉시 제출해야 하며, 미제출 시 100만원의 과태료가 부과됩니다.",
-              },
-              {
-                q: "공동주택과 상가가 함께 있는 복합건축물은 어떻게 되나요?",
-                a: "복합건축물의 경우 건축물대장의 주용도를 기준으로 판단합니다. 상가 부분이 연면적 기준을 충족하면 해당 부분의 관리주체가 의무를 이행해야 합니다.",
-              },
-              {
-                q: "FM(시설관리) 업체가 관리주체가 될 수 있나요?",
-                a: "FM 업체는 건물 소유자·관리자로부터 관리를 위탁받은 경우 관리주체로 볼 수 있습니다. 위탁계약의 범위에 정보통신설비 관리가 포함되어야 합니다.",
-              },
-            ].map(({ q, a }) => (
+            {homeFaqItems.map(({ q, a }) => (
               <div key={q} className="bg-white rounded-xl p-5 border border-[var(--color-border)] card-shadow">
                 <p className="text-sm font-bold mb-2" style={{ color: "var(--color-primary)" }}>Q. {q}</p>
                 <p className="text-sm leading-relaxed" style={{ color: "var(--color-gray-600)" }}>A. {a}</p>

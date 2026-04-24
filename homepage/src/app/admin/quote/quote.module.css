@@ -1,0 +1,288 @@
+.pageContainer {
+  background-color: #cbd5e1;
+  min-height: 100vh;
+  padding: 40px 20px;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.splitWrapper {
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+  align-items: flex-start;
+  max-width: 1600px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.leftPanel {
+  flex: 1;
+  max-width: 550px;
+  position: sticky;
+  top: 20px;
+  z-index: 10;
+}
+
+.rightPanel {
+  flex: 0 0 210mm;
+  padding-bottom: 40px;
+}
+
+@media (max-width: 1300px) {
+  .splitWrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+  .leftPanel {
+    position: static;
+    max-width: 210mm;
+    width: 100%;
+  }
+}
+
+.page {
+  width: 210mm;
+  min-height: 297mm;
+  background: white;
+  padding: 15mm 18mm;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  position: relative;
+  margin: 0 auto 30px auto;
+  page-break-after: always;
+  break-after: page;
+  color: #1f2937;
+  line-height: 1.3;
+  overflow: hidden;
+}
+
+@media (max-width: 210mm) {
+  .pageContainer {
+    padding: 20px 0;
+    align-items: flex-start;
+    overflow-x: auto;
+  }
+  .page {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 3px solid #1e3a8a;
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+}
+.header h1 {
+  color: #1e3a8a;
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: 5px;
+  text-align: center;
+  flex-grow: 1;
+}
+
+.logoBox { width: 180px; }
+.logoBox img { max-width: 100%; height: auto; }
+
+.infoGrid {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.customerInfo { flex: 1.2; }
+.customerInfo h2 {
+  font-size: 20px;
+  color: #1f2937;
+  border-bottom: 2px solid #1f2937;
+  display: inline-block;
+  padding-bottom: 5px;
+  margin-bottom: 15px;
+  margin-top: 0;
+}
+
+.companyInfo {
+  flex: 1;
+  background: #f9fafb;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  position: relative;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  box-shadow: inset 0 0 0 1000px #f9fafb;
+}
+
+.companyInfo table { width: 100%; font-size: 12px; border-collapse: collapse; }
+.companyInfo td { padding: 3px 0; }
+.companyInfo .label { font-weight: 700; width: 70px; color: #1f2937; text-align: left;}
+
+.signature {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}
+.signature img {
+  width: 60px;
+  height: 60px;
+  opacity: 0.9;
+}
+.signaturePlaceholder {
+  width: 60px;
+  height: 60px;
+  border: 2px dashed #ef4444;
+  color: #ef4444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 50%;
+  text-align: center;
+}
+
+.totalSummary {
+  background: #1e3a8a !important;
+  color: white !important;
+  padding: 15px 20px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 15px;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  box-shadow: inset 0 0 0 1000px #1e3a8a;
+}
+.totalSummaryBottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-top: 5px;
+  padding-top: 5px;
+  border-top: 1px solid rgba(255,255,255,0.2);
+}
+.monthlyTagInline {
+  background: #f59e0b !important; 
+  color: #fff !important; 
+  padding: 2px 8px; 
+  border-radius: 4px; 
+  font-size: 11px; 
+  font-weight: bold;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  box-shadow: inset 0 0 0 1000px #f59e0b;
+}
+.totalRow { display: flex; justify-content: space-between; width: 100%; align-items: baseline; }
+.priceMonth { font-size: 28px; font-weight: 700; }
+.priceYear { font-size: 13px; opacity: 0.9; }
+
+.sectionTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e3a8a;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+.sectionTitle::before {
+  content: '';
+  display: inline-block;
+  width: 4px; height: 16px; background: #3b82f6; margin-right: 8px;
+}
+
+table.dataTable {
+  width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 15px;
+}
+table.dataTable th, table.dataTable td {
+  border: 1px solid #d1d5db; padding: 5px 8px;
+}
+table.dataTable th {
+  background-color: #e2e8f0 !important; font-weight: 700; color: #1e3a8a; text-align: center;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  box-shadow: inset 0 0 0 1000px #e2e8f0;
+}
+table.dataTable td.num { text-align: right; }
+table.dataTable td.center { text-align: center; text-align: center; }
+
+.footer {
+  margin-top: 10px; font-size: 10px; color: #6b7280; line-height: 1.3;
+  border-top: 1px solid #d1d5db; padding-top: 8px; text-align: left;
+}
+
+@media print {
+  /* 브라우저 기본 여백 초기화 */
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white !important;
+  }
+
+  /* 물리 페이지 설정: 여백은 여기서만 지정 */
+  @page {
+    size: A4 portrait;
+    margin: 12mm 14mm;
+  }
+
+  .pageContainer, .splitWrapper, .rightPanel {
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    display: block !important;
+    flex: none !important;
+  }
+
+  .leftPanel {
+    display: none !important;
+  }
+
+  /* 각 페이지(.page)는 @page 여백 안쪽 공간에 맞춤 */
+  .page {
+    box-shadow: none !important;
+    margin: 0 !important;
+    /* padding은 화면 미리보기와 동일하게 유지 — 내용 여백 */
+    padding: 15mm 18mm !important;
+    /* @page margin이 상하좌우 물리 여백 담당, .page width는 출력 가능 영역 100% */
+    width: 100% !important;
+    min-height: auto !important;
+    page-break-after: always !important;
+    break-after: page !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    overflow: visible !important;
+  }
+
+  /* 마지막 페이지는 강제 page-break 제거 */
+  .page:last-child {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
+  /* 테이블 행은 페이지 중간에 잘리지 않도록 */
+  table.dataTable tr {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* 테이블 자체는 여러 페이지에 걸칠 수 있도록 허용 */
+  table.dataTable {
+    page-break-inside: auto !important;
+    break-inside: auto !important;
+  }
+
+  /* 섹션 제목은 테이블과 분리되지 않도록 */
+  .sectionTitle {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+}
