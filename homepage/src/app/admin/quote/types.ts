@@ -9,6 +9,7 @@ export interface QuoteInput {
   buildingTotalArea?: number;
   equipmentChecks?: string[];
   serviceScope: ServiceScope;
+  maintenanceContractAmount?: number; // 정보통신설비의 유지보수·관리자 위탁 금액 (원, 연간)
   discountRate: number; // 0 ~ 100 (%)
   salesName: string;
   salesPhone: string;

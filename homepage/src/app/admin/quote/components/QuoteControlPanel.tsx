@@ -247,6 +247,30 @@ export default function QuoteControlPanel({ input, onChange }: Props) {
         </div>
         <div className="flex flex-col">
           <label className="font-medium text-xs text-gray-500 mb-1">
+            정보통신설비의 유지보수·관리자 위탁 (원/연간)
+          </label>
+          <div className="relative">
+            <input
+              type="number"
+              className="p-2 pr-10 border border-gray-300 rounded-md text-sm outline-none focus:border-blue-500 bg-blue-50 w-full"
+              value={input.maintenanceContractAmount ?? 0}
+              min="0"
+              step="10000"
+              onChange={(e) =>
+                onChange({ maintenanceContractAmount: parseInt(e.target.value) || 0 })
+              }
+              placeholder="0"
+            />
+            <span className="absolute right-3 top-2 text-gray-400 text-xs">원</span>
+          </div>
+          {(input.maintenanceContractAmount ?? 0) > 0 && (
+            <p className="mt-1 text-[10px] text-blue-600">
+              ※ 할인 미적용 · 최종 공급가액 이후 별도 가산 · 월 {Math.round((input.maintenanceContractAmount ?? 0) / 12).toLocaleString()}원 (VAT 별도)
+            </p>
+          )}
+        </div>
+        <div className="flex flex-col">
+          <label className="font-medium text-xs text-gray-500 mb-1">
             협의 조정액 (할인율 %)
           </label>
           <div className="relative">

@@ -11,6 +11,13 @@ export default function QuoteA4Document({ input, output }: Props) {
   // 숫자 포맷팅 함수
   const fmt = (num: number) => Math.max(0, Math.round(num)).toLocaleString();
 
+  // 유지보수·관리자 위탁 금액 (할인 미적용, 별도 가산)
+  const maintenanceAmt = input.maintenanceContractAmount || 0;
+  const combinedSupplyCost = output.supplyCost + maintenanceAmt;
+  const combinedTaxAmount = Math.round(combinedSupplyCost * 0.1);
+  const combinedYearTotal = combinedSupplyCost + combinedTaxAmount;
+  const combinedMonthlyTotal = Math.floor(combinedYearTotal / 12 / 10000) * 10000;
+
   // 서비스 번호 매기기 로직
   let svcCount = 1;
 
@@ -95,13 +102,13 @@ export default function QuoteA4Document({ input, output }: Props) {
           <div className={styles.totalRow}>
             <span>월 청구 금액 (VAT 포함)</span>
             <div>
-              <span className={styles.priceMonth}>₩ {fmt(output.monthlyTotal)}</span>
+              <span className={styles.priceMonth}>₩ {fmt(maintenanceAmt > 0 ? combinedMonthlyTotal : output.monthlyTotal)}</span>
             </div>
           </div>
           <div className={styles.totalSummaryBottom}>
             <span className={styles.monthlyTagInline}>12개월 분납형 (월 단위 청구)</span>
             <span className={styles.priceYear}>
-              연간 총 견적 합계 (VAT 포함) : ₩ {fmt(output.yearTotal)}
+              연간 총 견적 합계 (VAT 포함) : ₩ {fmt(maintenanceAmt > 0 ? combinedYearTotal : output.yearTotal)}
             </span>
           </div>
         </div>
@@ -197,11 +204,20 @@ export default function QuoteA4Document({ input, output }: Props) {
               </td>
               <td></td>
             </tr>
+            {maintenanceAmt > 0 && (
+              <tr style={{ backgroundColor: "#f0f9ff", WebkitPrintColorAdjust: "exact", printColorAdjust: "exact", boxShadow: "inset 0 0 0 1000px #f0f9ff" }}>
+                <td colSpan={2} className={styles.center}>
+                  정보통신설비의 유지보수·관리자 위탁
+                </td>
+                <td className={styles.num}>{fmt(maintenanceAmt)}</td>
+                <td className={styles.center}>별도 계약 (할인 미적용)</td>
+              </tr>
+            )}
             <tr>
               <td colSpan={2} className={styles.center}>
                 부가가치세
               </td>
-              <td className={styles.num}>{fmt(output.taxAmount)}</td>
+              <td className={styles.num}>{fmt(combinedTaxAmount)}</td>
               <td className={styles.center}>10%</td>
             </tr>
             <tr
@@ -218,7 +234,7 @@ export default function QuoteA4Document({ input, output }: Props) {
               <td colSpan={2} className={styles.center}>
                 연간 총 청구액계 (VAT포함)
               </td>
-              <td className={styles.num}>{fmt(output.yearTotal)}</td>
+              <td className={styles.num}>{fmt(combinedYearTotal)}</td>
               <td className={styles.center}></td>
             </tr>
           </tbody>
