@@ -264,7 +264,7 @@ export default function LawPage() {
           </div>
 
           {/* 관련 법령 */}
-          <h2 className="text-2xl font-bold mb-5" style={{ color: "var(--color-primary)" }}>관련 법령 목록</h2>
+          <h2 className="text-2xl font-bold mb-5" style={{ color: "var(--color-primary)" }}>정보통신설비 관련 법령은 어떻게 되나요?</h2>
           <div className="overflow-x-auto mb-10">
             <table className="w-full bg-white rounded-2xl border border-[var(--color-border)] card-shadow text-sm overflow-hidden">
               <thead>
@@ -285,7 +285,7 @@ export default function LawPage() {
           </div>
 
           {/* 관리주체 의무사항 */}
-          <h2 className="text-2xl font-bold mb-5" style={{ color: "var(--color-primary)" }}>관리주체 의무사항</h2>
+          <h2 className="text-2xl font-bold mb-5" style={{ color: "var(--color-primary)" }}>관리주체는 어떤 의무를 이행해야 하나요?</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
             {obligations.map(({ title, color, items }) => (
               <div key={title} className="bg-white rounded-2xl border border-[var(--color-border)] card-shadow overflow-hidden">
@@ -423,7 +423,7 @@ export default function LawPage() {
           </div>
 
           {/* 과태료 */}
-          <h2 className="text-2xl font-bold mb-3" style={{ color: "var(--color-primary)" }}>과태료 부과 기준</h2>
+          <h2 className="text-2xl font-bold mb-3" style={{ color: "var(--color-primary)" }}>정보통신설비 미이행 시 과태료는 얼마인가요?</h2>
           <div className="alert-deadline mb-5">
             <div className="flex items-center gap-2 mb-1">
               <AlertTriangle size={15} style={{ color: "var(--color-warning)" }} />
@@ -455,7 +455,41 @@ export default function LawPage() {
           </div>
 
           {/* 유예기한 요약 */}
-          <h2 className="text-2xl font-bold mb-5" style={{ color: "var(--color-primary)" }}>시행 유예기한</h2>
+          {/* 5-③ E-E-A-T 법령 출처 블록 */}
+          <div
+            className="mb-10 rounded-xl p-4 flex flex-wrap items-start gap-4 text-sm"
+            style={{ background: "var(--color-accent-light)", border: "1px solid var(--color-accent)" }}
+          >
+            <div className="flex-1 min-w-[220px]">
+              <p className="font-bold mb-1" style={{ color: "var(--color-primary)" }}>📌 법령 출처</p>
+              <ul className="space-y-0.5" style={{ color: "var(--color-gray-600)" }}>
+                <li>· 정보통신공사업법 제37조의4 (시행: 2024.7.19.)</li>
+                <li>· 과기정통부 고시 「정보통신설비 유지보수·관리기준」</li>
+              </ul>
+            </div>
+            <div className="flex flex-wrap gap-2 items-center">
+              <a
+                href="https://www.law.go.kr/법령/정보통신공사업법"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors hover:opacity-80"
+                style={{ background: "var(--color-accent)", color: "white" }}
+              >
+                법령 원문 보기 →
+              </a>
+              <a
+                href="https://www.msit.go.kr/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors hover:opacity-80"
+                style={{ border: "1px solid var(--color-accent)", color: "var(--color-accent)" }}
+              >
+                과기정통부 →
+              </a>
+            </div>
+          </div>
+
+          <h2 className="text-2xl font-bold mb-5" style={{ color: "var(--color-primary)" }}>건축물 규모별 의무 이행 기한은 언제인가요?</h2>
           <div className="overflow-x-auto">
             <table className="w-full bg-white rounded-2xl border border-[var(--color-border)] card-shadow text-sm overflow-hidden">
               <thead>

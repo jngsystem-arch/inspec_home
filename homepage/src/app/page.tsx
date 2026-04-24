@@ -217,7 +217,7 @@ export default function HomePage() {
 
           {/* 서비스 카드 */}
           <h2 className="text-2xl sm:text-3xl font-bold mb-4" style={{ color: "var(--color-primary)" }}>
-            3가지 핵심 서비스
+            성능점검·유지보수, 어떤 서비스가 필요한가요?
           </h2>
           <p className="mb-12 text-sm" style={{ color: "var(--color-gray-600)" }}>
             법적 의무 이행에 필요한 모든 서비스를 원스톱으로 제공합니다.
@@ -313,7 +313,7 @@ export default function HomePage() {
       <section className="section-padding">
         <div className="container-main">
           <h2 className="text-2xl sm:text-3xl font-bold mb-2" style={{ color: "var(--color-primary)" }}>
-            건축물 규모별 의무 이행 기한
+            우리 건물의 의무 이행 기한은 언제인가요?
           </h2>
           <p className="mb-10 text-sm" style={{ color: "var(--color-gray-600)" }}>
             시행 유예기한 내에 반드시 유지보수·관리 및 성능점검 체계를 갖추어야 합니다.
@@ -383,7 +383,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
             <div>
               <h2 className="text-2xl sm:text-3xl font-bold mb-3" style={{ color: "var(--color-primary)" }}>
-                미이행 시 과태료 현황
+                정보통신설비 미이행 시 과태료는 얼마인가요?
               </h2>
               <p className="mb-6 text-sm" style={{ color: "var(--color-gray-600)" }}>
                 관리기준 미준수 시 아래 과태료가 부과되며, 위반 항목이 여러 개인 경우 중복 부과될 수 있습니다.
@@ -481,7 +481,7 @@ export default function HomePage() {
       <section className="section-padding">
         <div className="container-main">
           <h2 className="text-2xl font-bold mb-10 text-center" style={{ color: "var(--color-primary)" }}>
-            꼭 알아야 할 제도 핵심
+            정보통신설비 제도, 핵심만 정리하면?
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {[

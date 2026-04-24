@@ -104,6 +104,15 @@ export default function FaqPage() {
 
       <section className="section-padding">
         <div className="container-main">
+          {/* Answer-First 요약 블록 — AI 크롤러 인용 최적화 */}
+          <div className="answer-block" aria-label="summary">
+            <p>
+              이 페이지는 과학기술정보통신부 「정보통신설비 유지보수·관리 제도 질의응답 사례집」을 기반으로
+              관리주체 판단·대상건축물 확인·선임기준·과태료 등 실무 질문 {faqCategories.reduce((s, c) => s + c.items.length, 0)}건을 정리한 공식 Q&A입니다.
+              연면적 5,000㎡ 이상 건축물 관리주체의 법적 의무 이행에 필요한 핵심 질문을 모두 담았습니다.
+            </p>
+          </div>
+
           {/* 클라이언트 컴포넌트: 검색·필터·아코디언 */}
           <FaqClient categories={faqCategories} />
 

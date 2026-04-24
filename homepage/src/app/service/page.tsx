@@ -206,7 +206,7 @@ export default function ServicePage() {
           </div>
 
           {/* 서비스 카드 상세 */}
-          <h2 className="text-2xl font-bold mb-6" style={{ color: "var(--color-primary)" }}>서비스 상세</h2>
+          <h2 className="text-2xl font-bold mb-6" style={{ color: "var(--color-primary)" }}>성능점검 대행과 유지보수 위탁, 어떻게 진행되나요?</h2>
           <div className="space-y-6">
             {services.map(({ icon: Icon, title, subtitle, color, summary, points, highlight }) => (
               <div key={title} className="bg-white rounded-2xl border border-[var(--color-border)] card-shadow overflow-hidden">
@@ -248,7 +248,7 @@ export default function ServicePage() {
       <section className="section-padding bg-[var(--color-bg)]">
         <div className="container-main">
           <h2 className="text-2xl font-bold mb-2" style={{ color: "var(--color-primary)" }}>
-            성능점검 vs 유지보수·관리 비교
+            성능점검과 유지보수·관리, 무엇이 다른가요?
           </h2>
           <p className="mb-6 text-sm" style={{ color: "var(--color-gray-600)" }}>
             두 서비스는 각각 별도로 의무 이행해야 하며, 위탁 시 효과가 다릅니다.
@@ -322,7 +322,7 @@ export default function ServicePage() {
           </div>
 
           <h2 className="text-2xl font-bold mb-3 mt-10" style={{ color: "var(--color-primary)" }}>
-            유지보수관리자 선임 자격 기준 요약
+            유지보수 관리자 선임 자격, 어떤 기준인가요?
           </h2>
           <p className="mb-5 text-sm" style={{ color: "var(--color-gray-600)" }}>
             정보통신공사업법 시행령 제37조의2에 따라 건축물 규모별로 선임 기술자 등급이 다릅니다.
