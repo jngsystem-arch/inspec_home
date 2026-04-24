@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, AlertTriangle, Info } from "lucide-react";
 import PageLayout from "@/components/PageLayout";
 import BreadcrumbSchema from "@/components/BreadcrumbSchema";
@@ -153,8 +154,20 @@ export default function LawPage() {
       <BreadcrumbSchema items={[{ name: "홈", path: "/" }, { name: "법령 안내", path: "/law" }]} />
 
       {/* 헤더 */}
-      <section style={{ background: "linear-gradient(rgba(59,130,246,0.09) 1px, transparent 1px) 0 0 / 48px 48px, linear-gradient(90deg, rgba(59,130,246,0.09) 1px, transparent 1px) 0 0 / 48px 48px, linear-gradient(160deg, #040D1C 0%, #0A1F3D 42%, #0C2450 100%)" }}>
-        <div className="container-main py-12">
+      <section className="relative overflow-hidden">
+        <Image
+          src="/hero-law.webp"
+          alt="정보통신설비 유지보수·관리 법령 안내"
+          fill
+          priority
+          className="object-cover"
+          style={{ objectPosition: "center center", filter: "brightness(0.15)" }}
+          sizes="100vw"
+        />
+        <div className="absolute inset-0" style={{
+          background: "linear-gradient(to right, rgba(4,13,28,0.92) 0%, rgba(4,13,28,0.88) 45%, rgba(4,13,28,0.78) 70%, rgba(4,13,28,0.68) 100%)"
+        }} />
+        <div className="relative z-10 container-main py-12">
           <p className="text-white/60 text-sm mb-2">법령 안내</p>
           <h1 className="text-white text-3xl sm:text-4xl font-bold mb-4">관련 법령 및 의무사항</h1>
           <p className="text-white/80 max-w-xl leading-relaxed">
