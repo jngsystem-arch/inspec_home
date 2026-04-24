@@ -4,8 +4,21 @@ import Image from "next/image";
 
 export default function Footer() {
   return (
-    <footer className="text-white mt-auto" style={{ background: "radial-gradient(ellipse 52% 68% at 74% 44%, rgba(59,130,246,0.12) 0%, transparent 68%), linear-gradient(168deg, #040D1C 0%, #0A1F3D 35%, #0D2B5E 100%)" }}>
-      <div className="container-main py-12">
+    <footer className="text-white mt-auto relative overflow-hidden">
+      {/* 배경 이미지 (WebP 압축, brightness 0.15) */}
+      <Image
+        src="/foot.webp"
+        alt=""
+        fill
+        className="object-cover"
+        style={{ objectPosition: "center center", filter: "brightness(0.1)" }}
+        sizes="100vw"
+      />
+      {/* 네이비 오버레이 */}
+      <div className="absolute inset-0" style={{
+        background: "linear-gradient(to right, rgba(4,13,28,0.92) 0%, rgba(4,13,28,0.88) 45%, rgba(4,13,28,0.78) 70%, rgba(4,13,28,0.68) 100%)"
+      }} />
+      <div className="relative z-10 container-main py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* 회사 소개 */}
           <div>
@@ -64,3 +77,4 @@ export default function Footer() {
     </footer>
   );
 }
+
