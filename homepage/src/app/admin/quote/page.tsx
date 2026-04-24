@@ -38,6 +38,65 @@ function QuotePageContent() {
     window.print();
   };
 
+  // 엑셀(CSV) 다운로드 핸들러
+  const handleExcelDownload = () => {
+    const maintenanceAmt = input.maintenanceContractAmount || 0;
+    const combinedSupplyCost = output.supplyCost + maintenanceAmt;
+    const combinedTaxAmount = Math.round(combinedSupplyCost * 0.1);
+    const combinedYearTotal = combinedSupplyCost + combinedTaxAmount;
+    const combinedMonthlyTotal = Math.floor(combinedYearTotal / 12 / 10000) * 10000;
+
+    const fmt = (n: number) => Math.max(0, Math.round(n)).toLocaleString('ko-KR');
+    const today = new Date().toLocaleDateString('ko-KR');
+
+    const rows: string[][] = [
+      ['[견적서]', `작성일: ${today}`],
+      [],
+      ['▶ 고객 정보'],
+      ['고객사(건물명)', input.companyName || ''],
+      ['담당자', input.customerName || ''],
+      ['연락처', input.customerPhone || ''],
+      ['이메일', input.customerEmail || ''],
+      ['건물 주소', input.buildingAddress || ''],
+      ['연면적', `${(input.buildingTotalArea || 0).toLocaleString('ko-KR')} ㎡`],
+      [],
+      ['▶ 대가 산출 요약'],
+      ['항목', '연간 금액(원)', '비고'],
+      [`엔지니어링 직접인건비 (${output.engineerGrade})`, fmt(output.laborCost), '협회 대가기준'],
+      ['제경비', fmt(output.overheadCost), '직접인건비의 110%'],
+      ['기술료', fmt(output.techCost), '(인건비+제경비)의 20%'],
+      ['KICA 기준 산출 공급가액 합계', fmt(output.calcTotal), ''],
+      ['특별 협의 조정액 (-)', `-${fmt(output.discountApplied)}`, 'J&G 시스템 별도 지원'],
+      ['최종 공급가액', fmt(output.supplyCost), ''],
+      ['정보통신설비의 유지보수·관리자 위탁 선임료', fmt(maintenanceAmt), '비상주 (할인 미적용)'],
+      ['부가가치세', fmt(combinedTaxAmount), '10%'],
+      ['연간 총 청구액계 (VAT포함)', fmt(combinedYearTotal), ''],
+      [],
+      ['▶ 월 청구 금액'],
+      ['월 청구액 (VAT포함)', fmt(maintenanceAmt > 0 ? combinedMonthlyTotal : output.monthlyTotal), '12개월 분납형'],
+      [],
+      ['▶ 영업 담당'],
+      ['영업 담당자', input.salesName],
+      ['영업 연락처', input.salesPhone],
+    ];
+
+    const csv = rows
+      .map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','))
+      .join('\r\n');
+
+    const bom = '\uFEFF'; // UTF-8 BOM (한글 깨짐 방지)
+    const blob = new Blob([bom + csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+    a.download = `견적서_${input.companyName || '미입력'}_${dateStr}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   // URL 파라미터로 ID가 넘어왔을 경우 DB에서 데이터 불러오기
   useEffect(() => {
     if (inquiryId && !isLocked) {
@@ -142,13 +201,19 @@ function QuotePageContent() {
             
             {/* 액션 버튼 바 */}
             <div className="flex flex-col gap-3 print:hidden">
-              <button 
+              <button
                 onClick={handlePdfDownload}
                 className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3.5 px-6 rounded-xl text-lg flex items-center justify-center gap-2 shadow-lg transition-transform hover:scale-[1.02]"
               >
                 📄 PDF 파일 다운로드 (저장)
               </button>
-              <button 
+              <button
+                onClick={handleExcelDownload}
+                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-6 rounded-xl text-lg flex items-center justify-center gap-2 shadow-lg transition-transform hover:scale-[1.02]"
+              >
+                📊 엑셀로 다운로드 (CSV)
+              </button>
+              <button
                 onClick={() => router.push("/admin/dashboard")}
                 className="w-full bg-gray-800 hover:bg-gray-900 text-white font-semibold py-3 px-6 rounded-xl text-base flex items-center justify-center gap-2 transition-all opacity-80 hover:opacity-100"
               >

@@ -207,10 +207,10 @@ export default function QuoteA4Document({ input, output }: Props) {
             {maintenanceAmt > 0 && (
               <tr style={{ backgroundColor: "#f0f9ff", WebkitPrintColorAdjust: "exact", printColorAdjust: "exact", boxShadow: "inset 0 0 0 1000px #f0f9ff" }}>
                 <td colSpan={2} className={styles.center}>
-                  정보통신설비의 유지보수·관리자 위탁
+                  정보통신설비의 유지보수·관리자 위탁 선임료
                 </td>
                 <td className={styles.num}>{fmt(maintenanceAmt)}</td>
-                <td className={styles.center}>별도 계약 (할인 미적용)</td>
+                <td className={styles.center}>비상주</td>
               </tr>
             )}
             <tr>

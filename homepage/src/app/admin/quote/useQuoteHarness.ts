@@ -10,6 +10,7 @@ export function useQuoteHarness(model: IQuoteModel) {
     companyName: "",
     customerName: "",
     serviceScope: "all",
+    maintenanceContractAmount: 3600000, // 기본 360만원
     discountRate: 50, // 기본 50%
     salesName: "박상하 부장",
     salesPhone: "010-2230-0671",
