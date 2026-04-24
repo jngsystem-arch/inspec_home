@@ -12,6 +12,17 @@ export const metadata: Metadata = {
     "대가산정",
     "KICA 대가산정",
   ],
+  alternates: { canonical: "https://jngsystem.com/estimate" },
+  openGraph: {
+    title: "무료 견적 계산 | 정보통신설비 유지보수·관리 — 제이앤지시스템",
+    description: "연면적과 보유 설비를 입력하면 KICA 대가산정 기준에 따라 유지보수·관리 및 성능점검 대가를 즉시 자동 계산합니다.",
+    url: "https://jngsystem.com/estimate",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "정보통신설비 유지보수·성능점검 무료 견적 계산 — KICA 기준 자동산출",
+    description: "연면적·설비 선택만 하면 KICA 대가산정 기준으로 즉시 계산. 직접인건비·제경비·기술료·VAT 항목별 내역 제공.",
+  },
 };
 
 export default function EstimatePage() {

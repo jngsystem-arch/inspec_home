@@ -52,6 +52,21 @@ export const metadata: Metadata = {
     siteName: "제이앤지시스템 JNGSYSTEM",
     title: "제이앤지시스템 JNGSYSTEM | 정보통신설비 성능점검 & 유지보수 전문",
     description: "정보통신공사업법 제37조의2에 따른 정보통신설비 성능점검 대행 및 유지보수·관리 위탁 전문 업체. 연면적 5천㎡ 이상 건축물 관리주체의 법적 의무 이행을 지원합니다.",
+    url: "https://jngsystem.com",
+    images: [
+      {
+        url: "https://jngsystem.com/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "제이앤지시스템 | 정보통신설비 성능점검 & 유지보수",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "제이앤지시스템 JNGSYSTEM | 정보통신설비 성능점검 & 유지보수 전문",
+    description: "정보통신공사업법 제37조의2에 따른 정보통신설비 성능점검 대행 및 유지보수·관리 위탁 전문 업체. 연면적 5천㎡ 이상 건축물 관리주체의 법적 의무 이행을 지원합니다.",
+    images: ["https://jngsystem.com/opengraph-image"],
   },
   robots: {
     index: true,

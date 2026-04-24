@@ -28,6 +28,11 @@ export const metadata: Metadata = {
     description: "정보통신설비 성능점검 대행(매년 1회 이상), 유지보수·관리 위탁(반기별 1회 이상), 관리자 선임 간주 처리. 22년 IT 인프라 경험 기반 구조적 진단.",
     url: "https://jngsystem.com/service",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "정보통신설비 성능점검 대행 & 유지보수관리 위탁 — 제이앤지시스템",
+    description: "성능점검 대행(연 1회), 유지보수·관리 위탁(반기 1회), 관리자 선임 간주 처리. 22년 IT 인프라 경험 기반.",
+  },
 };
 
 const serviceSchema = {

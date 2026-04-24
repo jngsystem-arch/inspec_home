@@ -22,6 +22,11 @@ export const metadata: Metadata = {
     description: "정보통신설비 성능점검 절차를 안내합니다. 상담 신청 → 현장 조사 → 계약 체결 → 관리점검 실시 → 성능점검 실시 → 점검표 기록·보존까지 6단계.",
     url: "https://jngsystem.com/process",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "정보통신설비 성능점검 절차 6단계 — 상담부터 점검표 보존까지",
+    description: "상담 신청 → 현장 조사 → 계약 → 관리점검 → 성능점검 → 기록 보존. 전 과정 전문가 대행.",
+  },
 };
 
 const howToSchema = {

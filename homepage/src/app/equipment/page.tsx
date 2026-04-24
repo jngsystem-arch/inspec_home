@@ -22,6 +22,11 @@ export const metadata: Metadata = {
     description: "정보통신설비 성능점검 대상 34개 설비 전체 목록. 통신설비 8개, 방송설비 1개, 정보설비 23개(CCTV·네트워크·홈네트워크·BEMS 등), 기타설비 2개.",
     url: "https://jngsystem.com/equipment",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "정보통신설비 성능점검 대상 34개 설비 목록 — 법정 의무 항목 전체",
+    description: "통신 8개·방송 1개·정보 23개·기타 2개. CCTV·네트워크·홈네트워크·BEMS 등 34개 설비 상세.",
+  },
 };
 
 const categories = [

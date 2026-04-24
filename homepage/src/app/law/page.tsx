@@ -23,6 +23,11 @@ export const metadata: Metadata = {
     description: "정보통신설비 유지보수·관리 및 성능점검 관련 법령 안내. 유지보수·관리 반기별 1회, 성능점검 매년 1회, 기록 5년 보존, 선임 간주, 과태료 300만원.",
     url: "https://jngsystem.com/law",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "정보통신설비 유지보수 법령 — 제37조의2 관리기준·과태료 300만원",
+    description: "반기 1회 유지보수·관리, 연 1회 성능점검, 5년 기록 보존 의무. 미이행 시 최대 300만원 과태료.",
+  },
 };
 
 const faqSchema = {

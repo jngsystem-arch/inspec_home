@@ -1,4 +1,4 @@
-# AI 크롤러 접근 허용 (GEO 최적화)
+# Allow AI bots for GEO/AEO (Generative Engine Optimization)
 User-agent: GPTBot
 Allow: /
 
@@ -11,6 +11,13 @@ Allow: /
 User-agent: ClaudeBot
 Allow: /
 
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# Standard search crawlers
 User-agent: Googlebot
 Allow: /
 
@@ -20,4 +27,5 @@ Allow: /
 User-agent: *
 Allow: /
 
+# Sitemap
 Sitemap: https://jngsystem.com/sitemap.xml

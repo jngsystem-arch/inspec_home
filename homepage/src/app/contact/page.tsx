@@ -23,6 +23,11 @@ export const metadata: Metadata = {
     description: "정보통신설비 성능점검 대행 및 유지보수·관리 위탁 무료 상담을 신청하세요. 대상 여부 확인, 견적 안내, 법령 질문 모두 답변드립니다.",
     url: "https://jngsystem.com/contact",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "정보통신설비 성능점검 무료 상담 — 제이앤지시스템",
+    description: "대상 여부 확인, 견적 안내, 법령 질문 모두 무료. 영업일 당일 답변. 02-3444-3570",
+  },
 };
 
 const localBusinessSchema = {

@@ -31,6 +31,11 @@ export const metadata: Metadata = {
     description: "정보통신공사업법 제37조의2에 따른 성능점검 대행 및 유지보수·관리 위탁. 22년 기업 IT 인프라 유지보수 경험. 연면적 5천㎡ 이상 건축물 2026.7.18 마감.",
     url: "https://jngsystem.com",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "제이앤지시스템 | 정보통신설비 성능점검 & 유지보수 — 2026.7.18 마감",
+    description: "정보통신공사업법 제37조의2에 따른 성능점검 대행 및 유지보수·관리 위탁. 미이행 시 최대 300만원 과태료.",
+  },
 };
 
 const organizationSchema = {

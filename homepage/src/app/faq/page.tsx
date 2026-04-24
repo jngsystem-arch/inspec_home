@@ -29,6 +29,11 @@ export const metadata: Metadata = {
     description: "과학기술정보통신부 정보통신설비 유지보수·관리 제도 질의응답 사례집. 관리주체 판단, 대상건축물, 선임기준, 과태료 등 75개 이상 실무 Q&A.",
     url: "https://jngsystem.com/faq",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "정보통신설비 성능점검·유지보수 FAQ 75건 — 과기정통부 Q&A 기반",
+    description: "관리주체 판단, 대상건축물, 선임기준, 과태료 등 실무 질문 75건. 검색으로 바로 찾기.",
+  },
 };
 
 const faqPageSchema = {

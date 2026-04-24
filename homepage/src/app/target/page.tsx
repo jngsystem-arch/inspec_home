@@ -21,6 +21,11 @@ export const metadata: Metadata = {
     description: "정보통신설비 유지보수·관리 및 성능점검 대상 건축물을 확인하세요. 연면적 5천㎡ 이상 건축물(공동주택 제외). 규모별 의무 이행 기한 안내.",
     url: "https://jngsystem.com/target",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "우리 건물, 정보통신설비 점검 의무 대상인가요? — 연면적 5천㎡ 이상 확인",
+    description: "연면적 5천㎡ 이상 건축물(공동주택 제외)은 의무 대상. 규모별 마감: 1만~3만㎡는 2026.7.18.",
+  },
 };
 
 const targetBuildings = [
