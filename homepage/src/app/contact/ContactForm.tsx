@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Send, CheckCircle2, Search } from "lucide-react";
+import { Send, CheckCircle2, Search, MessageSquare, FileText } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import Script from "next/script";
 
@@ -835,7 +835,7 @@ function DetailContactForm() {
 /* ─────────────────────────────────────────────── */
 
 export default function ContactForm() {
-  const [tab, setTab] = useState<"basic" | "detail">("basic");
+  const [tab, setTab] = useState<"basic" | "detail">("detail");
 
   return (
     <div>
@@ -845,33 +845,40 @@ export default function ContactForm() {
       />
 
       {/* 탭 버튼 */}
-      <div
-        className="flex rounded-xl p-1 mb-6"
-        style={{ background: "var(--color-gray-100)" }}
-      >
+      <div className="flex gap-3 mb-6">
         <button
           type="button"
           onClick={() => setTab("basic")}
-          className="flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all"
+          className="flex-1 flex flex-col items-center gap-1.5 py-4 px-3 rounded-xl border-2 transition-all cursor-pointer"
           style={
             tab === "basic"
-              ? { background: "white", color: "var(--color-primary)", boxShadow: "0 1px 6px rgba(13,43,94,0.12)" }
-              : { color: "var(--color-gray-600)" }
+              ? { borderColor: "var(--color-accent)", background: "var(--color-accent-light)", color: "var(--color-accent)" }
+              : { borderColor: "var(--color-border)", background: "white", color: "var(--color-gray-600)" }
           }
         >
-          상담신청
+          <MessageSquare size={22} />
+          <span className="text-sm font-bold">상담신청하기</span>
+          <span className="text-[11px]">간단하게 문의</span>
         </button>
         <button
           type="button"
           onClick={() => setTab("detail")}
-          className="flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all"
+          className="flex-1 flex flex-col items-center gap-1.5 py-4 px-3 rounded-xl border-2 transition-all cursor-pointer relative"
           style={
             tab === "detail"
-              ? { background: "white", color: "var(--color-primary)", boxShadow: "0 1px 6px rgba(13,43,94,0.12)" }
-              : { color: "var(--color-gray-600)" }
+              ? { borderColor: "var(--color-accent)", background: "var(--color-accent-light)", color: "var(--color-accent)" }
+              : { borderColor: "var(--color-border)", background: "white", color: "var(--color-gray-600)" }
           }
         >
-          견적서 바로 신청
+          <span
+            className="absolute -top-2.5 left-1/2 -translate-x-1/2 text-[10px] font-bold px-2 py-0.5 rounded-full text-white whitespace-nowrap"
+            style={{ background: "var(--color-accent)" }}
+          >
+            빠른 견적
+          </span>
+          <FileText size={22} />
+          <span className="text-sm font-bold">견적서 바로 신청하기</span>
+          <span className="text-[11px]">설비 선택 · 정확한 견적</span>
         </button>
       </div>
 
