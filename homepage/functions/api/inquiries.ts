@@ -246,6 +246,7 @@ export async function onRequestPost(context: PagesContext): Promise<Response> {
     details: JSON.stringify(emailPayload),
     status: "신규 문의",
     status_code: "new",
+    is_archived: false,
     customer_name: customerName,
     customer_phone: customerPhone,
     customer_email: customerEmail || null,

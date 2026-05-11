@@ -117,8 +117,8 @@ export default function AdminDashboardPage() {
     (i) => i.status === "신규 문의" || i.status === "신규",
   ).length;
   const doneCount = inquiries.filter((i) => i.status === "견적 완료").length;
-  const archivedCount = inquiries.filter((i) => i.is_archived).length;
-  const activeList = inquiries.filter((i) => showArchived || !i.is_archived);
+  const archivedCount = inquiries.filter((i) => i.is_archived === true).length;
+  const activeList = inquiries.filter((i) => showArchived || i.is_archived !== true);
 
   const kpi = [
     { label: "총 누적 문의", value: total, unit: "건", accent: "#0070F3", light: "#E8F1FF", icon: "📋" },
