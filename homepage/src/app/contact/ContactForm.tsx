@@ -104,6 +104,91 @@ type Web3FormsResponse = {
   success?: boolean;
 };
 
+type InquiryApiResponse = {
+  success?: boolean;
+  error?: string;
+};
+
+type InquiryAttribution = {
+  sourcePage: string;
+  landingPage: string;
+  referrer: string;
+  firstVisitAt: string;
+  utm: {
+    source: string;
+    medium: string;
+    campaign: string;
+    term: string;
+    content: string;
+  };
+};
+
+const ATTRIBUTION_KEY = "jng_first_visit_attribution";
+
+function getInquiryAttribution(sourcePage: string): InquiryAttribution {
+  if (typeof window === "undefined") {
+    return {
+      sourcePage,
+      landingPage: sourcePage,
+      referrer: "",
+      firstVisitAt: "",
+      utm: { source: "", medium: "", campaign: "", term: "", content: "" },
+    };
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  const now = new Date().toISOString();
+  const storedRaw = window.localStorage.getItem(ATTRIBUTION_KEY);
+  let stored: Partial<InquiryAttribution> | null = null;
+  if (storedRaw) {
+    try {
+      stored = JSON.parse(storedRaw) as Partial<InquiryAttribution>;
+    } catch {
+      stored = null;
+    }
+  }
+
+  if (!stored) {
+    const initial: InquiryAttribution = {
+      sourcePage,
+      landingPage: window.location.pathname,
+      referrer: document.referrer,
+      firstVisitAt: now,
+      utm: {
+        source: params.get("utm_source") ?? "",
+        medium: params.get("utm_medium") ?? "",
+        campaign: params.get("utm_campaign") ?? "",
+        term: params.get("utm_term") ?? "",
+        content: params.get("utm_content") ?? "",
+      },
+    };
+    window.localStorage.setItem(ATTRIBUTION_KEY, JSON.stringify(initial));
+    return initial;
+  }
+
+  return {
+    sourcePage,
+    landingPage: stored.landingPage ?? window.location.pathname,
+    referrer: stored.referrer ?? document.referrer,
+    firstVisitAt: stored.firstVisitAt ?? now,
+    utm: {
+      source: stored.utm?.source ?? params.get("utm_source") ?? "",
+      medium: stored.utm?.medium ?? params.get("utm_medium") ?? "",
+      campaign: stored.utm?.campaign ?? params.get("utm_campaign") ?? "",
+      term: stored.utm?.term ?? params.get("utm_term") ?? "",
+      content: stored.utm?.content ?? params.get("utm_content") ?? "",
+    },
+  };
+}
+
+function toServiceScopeCodes(scope: string[]): string[] {
+  const codes: string[] = [];
+  if (scope.some((item) => item.includes("성능점검"))) codes.push("inspection");
+  if (scope.some((item) => item.includes("유지보수"))) codes.push("maintenance");
+  if (scope.some((item) => item.includes("관리자"))) codes.push("manager");
+  return codes;
+}
+
 /* 공통 유틸: 카카오 주소 검색 */
 function openAddressSearch(onComplete: (full: string) => void) {
   if (typeof window !== "undefined" && window.daum) {
@@ -476,65 +561,30 @@ function DetailContactForm() {
         return;
       }
 
-      const selectedEquipment = form.equipment.length > 0 ? form.equipment.join(", ") : "미선택";
-      const areaLabel = form.buildingArea
-        ? `${form.buildingArea}㎡ (${getAreaInfo(form.buildingArea)?.range ?? "확인 필요"})`
-        : "미입력";
+      const response = await fetch("/api/inquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          inquiryType: "quote_direct",
+          customerName: form.name,
+          customerPhone: form.phone,
+          customerEmail: form.email,
+          buildingName: form.buildingName,
+          buildingAddress: form.buildingAddress,
+          buildingAreaM2: form.buildingArea,
+          serviceScope: toServiceScopeCodes(form.serviceScope),
+          equipmentList: form.equipment,
+          message: form.message,
+          ...getInquiryAttribution("/contact"),
+        }),
+      });
+      const data = (await response.json()) as InquiryApiResponse;
 
-      const payload = {
-        subject:             `[견적서신청] ${form.buildingName || form.name} — 정보통신설비 성능점검`,
-        from_name:           "제이앤지시스템 홈페이지",
-        "신청유형":          "견적서 바로 신청",
-        name:                form.name,
-        "연락처":            form.phone,
-        email:               form.email,
-        "건물 상호(명칭)":   form.buildingName,
-        "건물 소재지":       form.buildingAddress,
-        "건물 연면적":       areaLabel,
-        "요청 업무 범위":    form.serviceScope.length > 0 ? form.serviceScope.join(", ") : "미선택",
-        "점검 대상 설비":    selectedEquipment,
-        "선택 설비 수":      `${form.equipment.length}개`,
-        "문의 내용":         form.message || "없음",
-      };
-
-      let savedToCrm = false;
-      let sentByEmail = false;
-
-      /* 1. Supabase CRM 저장 */
-      if (supabase) {
-        try {
-          const { error: crmError } = await supabase.from("inquiries").insert([{
-            name:         form.name,
-            phone:        form.phone,
-            company:      form.buildingName,
-            inquiry_type: "견적서 바로 신청",
-            details:      JSON.stringify(payload),
-            status:       "신규 문의",
-          }]);
-          savedToCrm = !crmError;
-        } catch {
-          savedToCrm = false;
-        }
-      }
-
-      /* 2. Web3Forms 이메일 발송 */
-      try {
-        const res  = await fetch("https://api.web3forms.com/submit", {
-          method:  "POST",
-          headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body:    JSON.stringify({ access_key: WEB3FORMS_KEY, ...payload }),
-        });
-        const data = (await res.json()) as Web3FormsResponse;
-        sentByEmail = data.success === true;
-      } catch {
-        sentByEmail = false;
-      }
-
-      if (savedToCrm || sentByEmail) {
+      if (response.ok && data.success) {
         localStorage.setItem(RATE_LIMIT_DETAIL, Date.now().toString());
         setSubmitted(true);
       } else {
-        setError("접수에 실패했습니다. 잠시 후 다시 시도하시거나 02-3444-3570으로 연락해 주세요.");
+        setError(data.error || "접수에 실패했습니다. 잠시 후 다시 시도하시거나 02-3444-3570으로 연락해 주세요.");
       }
     } catch {
       setError("네트워크 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
